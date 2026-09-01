@@ -31,7 +31,7 @@ import com.endiel.jobfinder.model.Job
 @Composable
 fun JobCard(job: Job, modifier: Modifier = Modifier) {
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp,
             pressedElevation = 4.dp,

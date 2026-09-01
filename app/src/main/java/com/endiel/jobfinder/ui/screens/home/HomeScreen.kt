@@ -86,7 +86,7 @@ fun HomeScreen(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text("Find your dream job", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(16.dp))
+            Text("Find your dream job", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 16.dp))
             Spacer(modifier = Modifier.height(8.dp))
             // SEARCH BAR
             JobSearchBar(
@@ -96,7 +96,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 "Categories",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(start = 16.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -118,14 +118,14 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 "Recommended jobs",
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(start = 16.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             // JOBS CARD
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(sampleJobs) { job ->
                     JobCard(job = job)
