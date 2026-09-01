@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,12 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material3.Button
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,8 +32,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
+import com.endiel.jobfinder.data.repository.sampleJobs
 import com.endiel.jobfinder.ui.components.BottomNavBar
 import com.endiel.jobfinder.ui.components.CategoryChip
+import com.endiel.jobfinder.ui.components.JobCard
 import com.endiel.jobfinder.ui.components.JobSearchBar
 
 @Composable
@@ -100,13 +95,13 @@ fun HomeScreen(
                 searchQuery, onQueryChange = { searchQuery = it }
             )
             Spacer(modifier = Modifier.height(8.dp))
-            // CATEGORY FILTER CHIPS
             Text(
                 "Categories",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(start = 16.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
+            // CATEGORY FILTER CHIPS
             LazyRow(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -128,101 +123,9 @@ fun HomeScreen(
                 modifier = Modifier.padding(16.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            // RECOMMENDED JOBS CARD
-            ElevatedCard(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 4.dp,
-                    pressedElevation = 4.dp,
-                    hoveredElevation = 4.dp
-                )
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_background),
-                            contentDescription = "profile picture",
-                            modifier = Modifier.size(64.dp).clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Column() {
-                            Row() { Text("Junior android developer") }
-                            Row() { Text("Google") }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Column() {
-                            Row() { Text("Salary") }
-                            Row() { Text("($200k-300k)/year") }
-                        }
-                        Column() {
-                            Row() { Text("Candidates") }
-                            Row() { Text("12") }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(imageVector = Icons.Default.BookmarkBorder, contentDescription = "Save")
-                        Button( onClick = {} ) { Text("Apply Now") }
-                    }
-                }
-            }
-            // CARD 2
-            ElevatedCard(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 4.dp,
-                    pressedElevation = 4.dp,
-                    hoveredElevation = 4.dp
-                )
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_background),
-                            contentDescription = "profile picture",
-                            modifier = Modifier.size(64.dp).clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Column() {
-                            Row() { Text("Senior backend developer") }
-                            Row() { Text("Meta") }
-                        }
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Column() {
-                            Row() { Text("Salary") }
-                            Row() { Text("($400k-600k)/year") }
-                        }
-                        Column() {
-                            Row() { Text("Candidates") }
-                            Row() { Text("34") }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(imageVector = Icons.Default.BookmarkBorder, contentDescription = "Save")
-                        Button( onClick = {} ) { Text("Apply Now") }
-                    }
-                }
+            // JOBS CARD
+            sampleJobs.forEach { job ->
+                JobCard(job = job)
             }
         }
     }
