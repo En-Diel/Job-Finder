@@ -20,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -94,7 +96,7 @@ fun HomeScreen(navController: NavController) {
                 shape = RoundedCornerShape(32.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
-
+            // Category filter chips
             FlowRow(
                 modifier = Modifier.padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -106,6 +108,50 @@ fun HomeScreen(navController: NavController) {
                 FilterChip(selected = false, onClick = {}, label = {Text("Android developer")}, shape = CircleShape)
                 FilterChip(selected = false, onClick = {}, label = {Text("Public relation")}, shape = CircleShape)
                 FilterChip(selected = false, onClick = {}, label = {Text("More")}, shape = CircleShape)
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Text("Recommended job", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.width(16.dp))
+            // Recommended job card
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 4.dp,
+                    hoveredElevation = 4.dp
+                )
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row() {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_launcher_background),
+                            contentDescription = "profile picture",
+                            modifier = Modifier.size(64.dp).clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column() {
+                            Row() { Text("Junior android developer") }
+                            Row() { Text("Google") }
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Column() {
+                            Row() { Text("Salary") }
+                            Row() { Text("($1.5k-2k)/month") }
+                        }
+                        Column() {
+                            Row() { Text("Candidates") }
+                            Row() { Text("12") }
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        FilterChip(selected = false, onClick = {}, label = {Text("Save")}, shape = CircleShape)
+                        FilterChip(selected = false, onClick = {}, label = {Text("Apply Now")}, shape = CircleShape)
+                    }
+                }
             }
         }
     }
