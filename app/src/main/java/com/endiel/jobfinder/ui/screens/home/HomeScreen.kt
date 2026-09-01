@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,9 +17,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -167,9 +169,13 @@ fun HomeScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-                    FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        FilterChip(selected = false, onClick = {}, label = {Text("Save")}, shape = CircleShape)
-                        FilterChip(selected = false, onClick = {}, label = {Text("Apply Now")}, shape = CircleShape)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(imageVector = Icons.Default.BookmarkBorder, contentDescription = "Save")
+                        Button( onClick = {} ) { Text("Apply Now") }
                     }
                 }
             }
@@ -208,9 +214,13 @@ fun HomeScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-                    FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        FilterChip(selected = false, onClick = {}, label = {Text("Save")}, shape = CircleShape)
-                        FilterChip(selected = false, onClick = {}, label = {Text("Apply Now")}, shape = CircleShape)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(imageVector = Icons.Default.BookmarkBorder, contentDescription = "Save")
+                        Button( onClick = {} ) { Text("Apply Now") }
                     }
                 }
             }
