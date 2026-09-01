@@ -19,6 +19,6 @@ fun SearchScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         Text("Search Screen")
-        Button(onClick = { navController.navigate(Screen.Home.route) }) { Text("Home") }
+        Button(onClick = { navController.popBackStack() }) { Text("Back") }
     }
 }

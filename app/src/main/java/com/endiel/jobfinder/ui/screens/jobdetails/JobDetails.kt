@@ -19,6 +19,6 @@ fun JobDetailsScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         Text("Job Details Screen")
-        Button(onClick = { navController.navigate(Screen.Home.route) }) { Text("Home") }
+        Button(onClick = { navController.popBackStack() }) { Text("Back") }
     }
 }
