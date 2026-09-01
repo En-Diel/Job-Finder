@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -52,8 +55,7 @@ fun HomeScreen(navController: NavController) {
                 .verticalScroll(
                     rememberScrollState() // We'll change this scroll as the data scales up
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.Start
         ) {
             // Welcome message
             Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -62,8 +64,7 @@ fun HomeScreen(navController: NavController) {
                         painter = painterResource(id = R.drawable.ic_launcher_background),
                         contentDescription = "profile picture",
                         modifier = Modifier.size(64.dp).clip(CircleShape),
-                        contentScale = ContentScale.Crop,
-
+                        contentScale = ContentScale.Crop
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Column(modifier = Modifier) {
@@ -73,7 +74,7 @@ fun HomeScreen(navController: NavController) {
                 }
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Text("Find your dream job", style = MaterialTheme.typography.headlineMedium)
+            Text("Find your dream job", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(16.dp))
             Spacer(modifier = Modifier.width(16.dp))
             // Search Bar
             OutlinedTextField(
@@ -92,13 +93,20 @@ fun HomeScreen(navController: NavController) {
                 singleLine = true,
                 shape = RoundedCornerShape(32.dp)
             )
+            Spacer(modifier = Modifier.width(16.dp))
 
-            Text("Home Screen")
-            Button(onClick = { navController.navigate(Screen.Search.route) }) { Text("Search") }
-            Button(onClick = { navController.navigate(Screen.Profile.route) }) { Text("Profile") }
-            Button(onClick = { navController.navigate(Screen.SavedJobs.route) }) { Text("Saved Jobs") }
-            Button(onClick = { navController.navigate(Screen.JobDetails.route) }) { Text("Job Details") }
-
+            FlowRow(
+                modifier = Modifier.padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                //verticalArrangement = Arrangement.spacedBy(32.dp)
+            ) {
+                FilterChip(selected = false, onClick = {}, label = {Text("Remote job")}, shape = CircleShape)
+                FilterChip(selected = true, onClick = {}, label = {Text("Full time job")}, shape = CircleShape)
+                FilterChip(selected = false, onClick = {}, label = {Text("Part time job")}, shape = CircleShape)
+                FilterChip(selected = false, onClick = {}, label = {Text("Android developer")}, shape = CircleShape)
+                FilterChip(selected = false, onClick = {}, label = {Text("Public relation")}, shape = CircleShape)
+                FilterChip(selected = false, onClick = {}, label = {Text("More")}, shape = CircleShape)
+            }
         }
     }
 }
