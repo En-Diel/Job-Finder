@@ -1,12 +1,16 @@
 package com.endiel.jobfinder.ui.navigation
 
-import android.window.SplashScreen
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.endiel.jobfinder.ui.screens.home.HomeScreen
+import com.endiel.jobfinder.ui.screens.jobdetails.JobDetailsScreen
+import com.endiel.jobfinder.ui.screens.login.LoginScreen
+import com.endiel.jobfinder.ui.screens.profile.ProfileScreen
+import com.endiel.jobfinder.ui.screens.savedjobs.SavedJobsScreen
+import com.endiel.jobfinder.ui.screens.search.SearchScreen
+import com.endiel.jobfinder.ui.screens.splash.SplashScreen
 
 @Composable
 fun AppNavigation() {
@@ -16,25 +20,25 @@ fun AppNavigation() {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
 
         composable(Screen.Splash.route) {
-            // SplashScreen()
+            SplashScreen(navController)
         }
         composable(Screen.Login.route) {
-            // LoginScreen()
+            LoginScreen(navController)
         }
         composable(Screen.Home.route) {
-            //HomeScreen()
+            HomeScreen(navController)
         }
         composable(Screen.Search.route) {
-            // SearchScreen()
+            SearchScreen(navController)
         }
         composable(Screen.SavedJobs.route) {
-            // SavedJobsScreen()
+            SavedJobsScreen(navController)
         }
         composable(Screen.Profile.route) {
-            // ProfileScreen()
+            ProfileScreen(navController)
         }
         composable(Screen.JobDetails.route) {
-            // JobDetailsScreen()
+            JobDetailsScreen(navController)
         }
     }
 }
