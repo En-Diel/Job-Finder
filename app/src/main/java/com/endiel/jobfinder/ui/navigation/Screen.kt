@@ -1,6 +1,8 @@
 package com.endiel.jobfinder.ui.navigation
 
-sealed class Screen(val route: String) {
+sealed class Screen(
+    val route: String
+) {
     data object Splash: Screen("splash")
     data object Login: Screen("login")
     data object Home: Screen("home")
@@ -8,4 +10,6 @@ sealed class Screen(val route: String) {
     data object SavedJobs: Screen("saved_jobs")
     data object Profile: Screen("profile")
     data object JobDetails: Screen("job_details")
+    data object Settings: Screen("settings")
+    data object Jobs: Screen("Jobs")
 }

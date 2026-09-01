@@ -6,10 +6,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.endiel.jobfinder.ui.screens.home.HomeScreen
 import com.endiel.jobfinder.ui.screens.jobdetails.JobDetailsScreen
+import com.endiel.jobfinder.ui.screens.jobs.JobsScreen
 import com.endiel.jobfinder.ui.screens.login.LoginScreen
 import com.endiel.jobfinder.ui.screens.profile.ProfileScreen
 import com.endiel.jobfinder.ui.screens.savedjobs.SavedJobsScreen
 import com.endiel.jobfinder.ui.screens.search.SearchScreen
+import com.endiel.jobfinder.ui.screens.settings.SettingsScreen
 import com.endiel.jobfinder.ui.screens.splash.SplashScreen
 
 @Composable
@@ -29,7 +31,7 @@ fun AppNavigation() {
             HomeScreen(navController)
         }
         composable(Screen.Search.route) {
-            SearchScreen(navController)
+            SearchScreen()
         }
         composable(Screen.SavedJobs.route) {
             SavedJobsScreen(navController)
@@ -38,7 +40,13 @@ fun AppNavigation() {
             ProfileScreen(navController)
         }
         composable(Screen.JobDetails.route) {
-            JobDetailsScreen(navController)
+            JobDetailsScreen()
+        }
+        composable(Screen.Jobs.route) {
+            JobsScreen(navController)
+        }
+        composable(Screen.Settings.route) {
+            SettingsScreen(navController)
         }
     }
 }
