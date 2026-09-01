@@ -12,7 +12,7 @@ import com.endiel.jobfinder.R
 // Define our custom font family
 val CustomFont = FontFamily(
     Font(R.font.montserrat_regular, FontWeight.Normal),
-    Font(R.font.montserrat_medium, FontWeight.Normal),
+    Font(R.font.montserrat_medium, FontWeight.Medium),
     Font(R.font.montserrat_bold, FontWeight.Bold),
     Font(R.font.montserrat_italic, FontWeight.Normal, FontStyle.Italic),
     Font(R.font.montserrat_thin, FontWeight.Thin),
@@ -26,7 +26,18 @@ val AppTypography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = CustomFont,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = CustomFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 11.sp
     )
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
