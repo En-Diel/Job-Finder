@@ -14,19 +14,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,9 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.ui.components.BottomNavBar
+import com.endiel.jobfinder.ui.components.JobSearchBar
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController
+) {
+    // We'll use this when we create a viewModel
+    var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
         bottomBar = {
@@ -55,7 +59,7 @@ fun HomeScreen(navController: NavController) {
                 ),
             horizontalAlignment = Alignment.Start
         ) {
-            // Welcome message
+            // WELCOME MESSAGE
             Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
                 Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                     Image(
@@ -74,29 +78,15 @@ fun HomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.width(16.dp))
             Text("Find your dream job", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(16.dp))
             Spacer(modifier = Modifier.width(16.dp))
-            // Search Bar
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                placeholder = {
-                    Text("Search jobs...")
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search"
-                    )
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(32.dp)
+            // SEARCH BAR
+            JobSearchBar(
+                searchQuery, onQueryChange = { searchQuery = it }
             )
             Spacer(modifier = Modifier.width(16.dp))
-            // Category filter chips
+            // CATEGORY FILTER CHIPS
             FlowRow(
                 modifier = Modifier.padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                //verticalArrangement = Arrangement.spacedBy(32.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 FilterChip(selected = false, onClick = {}, label = {Text("Remote job")}, shape = CircleShape)
                 FilterChip(selected = true, onClick = {}, label = {Text("Full time job")}, shape = CircleShape)
@@ -108,7 +98,7 @@ fun HomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.width(16.dp))
             Text("Recommended jobs", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(16.dp))
             Spacer(modifier = Modifier.width(16.dp))
-            // Recommended job card
+            // RECOMMENDED JOBS CARD
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
                 elevation = CardDefaults.cardElevation(
@@ -118,7 +108,7 @@ fun HomeScreen(navController: NavController) {
                 )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Row() {
+                    Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_launcher_background),
                             contentDescription = "profile picture",
@@ -135,11 +125,52 @@ fun HomeScreen(navController: NavController) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Column() {
                             Row() { Text("Salary") }
-                            Row() { Text("($1.5k-2k)/month") }
+                            Row() { Text("($200k-300k)/year") }
                         }
                         Column() {
                             Row() { Text("Candidates") }
                             Row() { Text("12") }
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        FilterChip(selected = false, onClick = {}, label = {Text("Save")}, shape = CircleShape)
+                        FilterChip(selected = false, onClick = {}, label = {Text("Apply Now")}, shape = CircleShape)
+                    }
+                }
+            }
+            // CARD 2
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 4.dp,
+                    hoveredElevation = 4.dp
+                )
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_launcher_background),
+                            contentDescription = "profile picture",
+                            modifier = Modifier.size(64.dp).clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column() {
+                            Row() { Text("Senior backend developer") }
+                            Row() { Text("Meta") }
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Column() {
+                            Row() { Text("Salary") }
+                            Row() { Text("($400k-600k)/year") }
+                        }
+                        Column() {
+                            Row() { Text("Candidates") }
+                            Row() { Text("34") }
                         }
                     }
                     Spacer(modifier = Modifier.width(8.dp))
