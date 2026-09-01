@@ -79,9 +79,9 @@ fun HomeScreen(
                         contentScale = ContentScale.Crop
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Column(modifier = Modifier) {
-                        Row() { Text("Good morning") }
-                        Row() { Text("John Obwana") }
+                    Column() {
+                        Row() { Text("Good morning", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)) }
+                        Row() { Text("John Obwana", style = MaterialTheme.typography.labelLarge) }
                     }
                 }
             }
