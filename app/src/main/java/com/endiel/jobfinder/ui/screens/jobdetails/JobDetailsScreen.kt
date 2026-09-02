@@ -19,6 +19,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -33,6 +37,8 @@ fun JobDetailsScreen(
     job: Job,
     onBackClick: () -> Unit
 ) {
+    // Save state for save job button
+    var isSaved by remember { mutableStateOf(false) }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -89,19 +95,26 @@ fun JobDetailsScreen(
                     Text(text = job.jobPosition)
                 }
             }
-        }
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Text("Job description")
-            Text(text = job.description)
-            Text("Job responsibilities")
-            job.responsibilities.forEach { responsibility ->
-                Text(text = ". $responsibility ")
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Text("Job description")
+                Text(text = job.description)
+                Text("Job responsibilities")
+                job.responsibilities.forEach { responsibility ->
+                    Text(text = ". $responsibility ")
+                }
+                job.requirements.forEach { requirement ->
+                    Text(text = ". $requirement ")
+                }
+                Row() {
+                    Button(
+                        onClick = {
+                            isSaved = !isSaved
+                        }
+                    ) {
+                        Text(text = if (isSaved) "Job Saved" else "Save Job") }
+                    Button(onClick = {}) { Text("Apply Now") }
+                }
             }
-            job.requirements.forEach { requirement ->
-                Text(text = ". $requirement ")
-            }
-            Button(onClick = {}) { Text("Save Job") }
-            Button(onClick = {}) { Text("Apply Now") }
         }
     }
 }
