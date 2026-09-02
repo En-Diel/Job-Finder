@@ -1,6 +1,7 @@
 package com.endiel.jobfinder.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,9 +30,16 @@ import com.endiel.jobfinder.R
 import com.endiel.jobfinder.model.Job
 
 @Composable
-fun JobCard(job: Job, modifier: Modifier = Modifier) {
+fun JobCard(
+    job: Job,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+        modifier = modifier.fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp)
+            .clickable(onClick = onClick
+            ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp,
             pressedElevation = 4.dp,

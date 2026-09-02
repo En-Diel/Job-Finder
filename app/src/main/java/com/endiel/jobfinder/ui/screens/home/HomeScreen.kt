@@ -128,7 +128,12 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(sampleJobs) { job ->
-                    JobCard(job = job)
+                    JobCard(
+                        job = job,
+                        onClick = {
+                            //println("JOB CARD CLICKED: ${job.id}") // Testing the route
+                            navController.navigate("job_details/${job.id}")
+                    })
                 }
             }
         }
