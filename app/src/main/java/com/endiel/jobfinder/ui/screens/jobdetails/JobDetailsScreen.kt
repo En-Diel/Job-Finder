@@ -19,17 +19,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.endiel.jobfinder.R
-import com.endiel.jobfinder.data.repository.SavedJobsRepository
 import com.endiel.jobfinder.model.Job
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,8 +37,14 @@ fun JobDetailsScreen(
     job: Job,
     onBackClick: () -> Unit
 ) {
-    // Save state for save job button
-    var isSaved by remember { mutableStateOf(SavedJobsRepository.isJobSaved(job)) }
+    // Instantiate viewModel
+    val viewModel: JobDetailsViewModel = viewModel()
+    // Observe state
+    val isSaved by viewModel.isSaved.collectAsState()
+    // Initialize viewModel bases on the current job
+    LaunchedEffect(job.id) {
+        viewModel.loadJob(job)
+    }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -109,12 +114,7 @@ fun JobDetailsScreen(
                 Row() {
                     Button(
                         onClick = {
-                            if (isSaved){
-                                SavedJobsRepository.removeJob(job)
-                            } else {
-                                SavedJobsRepository.saveJob(job)
-                            }
-                            isSaved = !isSaved
+                            viewModel.toggleSaveJob(job)
                         }
                     ) {
                         Text(text = if (isSaved) "Job Saved" else "Save Job") }
