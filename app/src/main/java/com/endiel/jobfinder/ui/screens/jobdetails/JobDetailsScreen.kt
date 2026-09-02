@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.endiel.jobfinder.R
+import com.endiel.jobfinder.data.repository.SavedJobsRepository
 import com.endiel.jobfinder.model.Job
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +39,7 @@ fun JobDetailsScreen(
     onBackClick: () -> Unit
 ) {
     // Save state for save job button
-    var isSaved by remember { mutableStateOf(false) }
+    var isSaved by remember { mutableStateOf(SavedJobsRepository.isJobSaved(job)) }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -108,6 +109,11 @@ fun JobDetailsScreen(
                 Row() {
                     Button(
                         onClick = {
+                            if (isSaved){
+                                SavedJobsRepository.removeJob(job)
+                            } else {
+                                SavedJobsRepository.saveJob(job)
+                            }
                             isSaved = !isSaved
                         }
                     ) {
