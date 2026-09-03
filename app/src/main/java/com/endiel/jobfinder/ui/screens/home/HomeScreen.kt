@@ -55,6 +55,25 @@ fun HomeScreen(
         "Sales",
         "Engineering"
     )
+    // FILTERING
+    val filteredJobs = sampleJobs.filter { job ->
+        val matchesSearch = job.jobTitle.contains(
+            searchQuery,
+            ignoreCase = true
+        ) || job.companyName.contains(
+            searchQuery,
+            ignoreCase = true
+        )
+
+        val matchesCategory =
+            selectedCategory == "All" ||
+                    job.category.equals(
+                        selectedCategory,
+                        ignoreCase = true
+                    )
+
+        matchesSearch && matchesCategory
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -127,7 +146,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth().weight(1f),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(sampleJobs) { job ->
+                items(filteredJobs) { job ->
                     JobCard(
                         job = job,
                         onClick = {
