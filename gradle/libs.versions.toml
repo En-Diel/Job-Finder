@@ -12,10 +12,11 @@ composeRuntime = "1.12.0"
 uiTextGoogleFonts = "1.12.0"
 kotlinxCoroutines = "1.11.0"
 navigationCompose = "2.10.0"
-room = "2.6.1" # For room
-ksp = "1.9.22-1.0.17"
+room = "2.8.4" # For room
+ksp = "2.3.11"
 room3Common = "3.0.2"
 room3Runtime = "3.0.2" # Must match Kotlin version
+hilt = "2.60.1" # Use a stable version
 
 
 [libraries]
@@ -50,11 +51,15 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room3-common = { group = "androidx.room3", name = "room3-common", version.ref = "room3Common" }
 androidx-room3-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room3Runtime" }
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-plugin-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-plugin-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 # Room Plugin
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+# Hilt
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
