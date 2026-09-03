@@ -7,9 +7,9 @@ data class Job(
     val location: String,
     val salary: String,
     val category: String,
+    val description: String,
     val jobType: String,
     val jobPosition: String,
-    val description: String,
     val requirements: List<String>,
     val responsibilities: List<String>
 )
