@@ -32,7 +32,7 @@ fun AppNavigation() {
             HomeScreen(navController)
         }
         composable(Screen.Search.route) {
-            SearchScreen()
+            SearchScreen(navController)
         }
         composable(Screen.SavedJobs.route) {
             SavedJobsScreen(navController)
