@@ -61,7 +61,7 @@ class SavedJobsRepository(private val savedJobDao: SavedJobDao) {
         )
         savedJobDao.delete(entity)
     }
-    suspend fun isJobSaved(jobId: String): Boolean{
+    suspend fun isJobSaved(jobId: String): Flow<Boolean>{
         return savedJobDao.isJobSaved(jobId)
     }
 }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job as CoroutineJob
 
 @HiltViewModel
 class JobDetailsViewModel @Inject constructor(private val repository: SavedJobsRepository) : ViewModel() {
@@ -17,18 +18,24 @@ class JobDetailsViewModel @Inject constructor(private val repository: SavedJobsR
     private val _isSaved = MutableStateFlow(false)
     val isSaved: StateFlow<Boolean> = _isSaved.asStateFlow()
 
+    private var observationJob: CoroutineJob? = null
+
     fun loadJob(job: Job) {
-        viewModelScope.launch {
-            _isSaved.value = repository.isJobSaved(job.id)
+
+        observationJob?.cancel()
+
+        observationJob = viewModelScope.launch {
+            repository.isJobSaved(job.id).collect { saved ->
+                _isSaved.value = saved
+            }
         }
     }
-    fun toggleSaveJob(job: Job) {
+    fun toggleSaveJob(job: com.endiel.jobfinder.model.Job) {
         viewModelScope.launch {
             if (_isSaved.value) {
                 repository.removeJob(job)
             } else {
                 repository.saveJob(job)
-                _isSaved.value = true
             }
         }
     }

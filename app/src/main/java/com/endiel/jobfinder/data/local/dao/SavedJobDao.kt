@@ -22,5 +22,5 @@ interface SavedJobDao {
     suspend fun delete(job: SavedJobEntity)
 
     @Query("SELECT EXISTS(SELECT 1 FROM saved_jobs WHERE id = :jobId)")
-    suspend fun isJobSaved(jobId: String): Boolean
+    fun isJobSaved(jobId: String): Flow<Boolean>
 }
