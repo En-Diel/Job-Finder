@@ -115,14 +115,25 @@ fun JobsScreen(navController: NavController) {
                 )
                 Text(text = "${filteredJobs.size} jobs found", modifier = Modifier.padding(start = 16.dp))
                 // SEARCH RESULTS
-                LazyColumn(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    items(filteredJobs) { job ->
-                        JobCard(
-                            job = job,
-                            onClick = {
-                                navController.navigate("job_details/${job.id}")
-                            }
+                if (filteredJobs.isEmpty()) {
+                    Column() {
+                        Text(text = "No jobs found", style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Try searching for a different job title or company.",
+                            style = MaterialTheme.typography.bodyMedium
                         )
+                    }
+                } else {
+                    LazyColumn(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        items(filteredJobs) { job ->
+                            JobCard(
+                                job = job,
+                                onClick = {
+                                    navController.navigate("job_details/${job.id}")
+                                }
+                            )
+                        }
                     }
                 }
             }
