@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.model.Job
@@ -38,7 +39,8 @@ fun JobDetailsScreen(
     onBackClick: () -> Unit
 ) {
     // Instantiate viewModel
-    val viewModel: JobDetailsViewModel = viewModel()
+    //val viewModel: JobDetailsViewModel = viewModel()
+    val viewModel: JobDetailsViewModel = hiltViewModel()
     // Observe state
     val isSaved by viewModel.isSaved.collectAsState()
     // Initialize viewModel bases on the current job

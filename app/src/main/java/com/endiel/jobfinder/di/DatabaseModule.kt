@@ -1,7 +1,7 @@
 package com.endiel.jobfinder.di
 
 import android.content.Context
-import androidx.room3.Room
+import androidx.room.Room
 import com.endiel.jobfinder.data.local.JobFinderDatabase
 import com.endiel.jobfinder.data.local.dao.SavedJobDao
 import dagger.Module

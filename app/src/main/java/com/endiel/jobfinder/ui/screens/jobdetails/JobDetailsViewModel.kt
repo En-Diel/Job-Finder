@@ -1,26 +1,35 @@
 package com.endiel.jobfinder.ui.screens.jobdetails
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.repository.SavedJobsRepository
 import com.endiel.jobfinder.model.Job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class JobDetailsViewModel: ViewModel() {
+@HiltViewModel
+class JobDetailsViewModel @Inject constructor(private val repository: SavedJobsRepository) : ViewModel() {
 
     private val _isSaved = MutableStateFlow(false)
     val isSaved: StateFlow<Boolean> = _isSaved.asStateFlow()
 
     fun loadJob(job: Job) {
-        _isSaved.value = SavedJobsRepository.isJobSaved(job)
+        viewModelScope.launch {
+            _isSaved.value = repository.isJobSaved(job.id)
+        }
     }
     fun toggleSaveJob(job: Job) {
-        if (_isSaved.value) {
-            SavedJobsRepository.removeJob(job)
-        } else {
-            SavedJobsRepository.saveJob(job)
+        viewModelScope.launch {
+            if (_isSaved.value) {
+                repository.removeJob(job)
+            } else {
+                repository.saveJob(job)
+                _isSaved.value = true
+            }
         }
-        _isSaved.value = !_isSaved.value
     }
 }

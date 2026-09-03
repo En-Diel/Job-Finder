@@ -7,7 +7,7 @@ val sampleJobs = listOf(
         id = "1",
         companyName = "Google",
         jobTitle = "Android developer",
-        location = "Toront, Canada",
+        location = "Toronto, Canada",
         salary = "$90k - %200k",
         category = "Technology",
         "Full time",
