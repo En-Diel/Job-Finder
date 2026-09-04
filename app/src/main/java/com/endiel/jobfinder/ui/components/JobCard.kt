@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +35,8 @@ import com.endiel.jobfinder.model.Job
 fun JobCard(
     job: Job,
     onClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    isSaved: Boolean,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
@@ -77,7 +81,18 @@ fun JobCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Icons.Default.BookmarkBorder, contentDescription = "Save")
+                IconButton(onClick = onSaveClick ) { Icon(imageVector = if (isSaved) {
+                    Icons.Default.Bookmark
+                } else {
+                    Icons.Default.BookmarkBorder
+                },
+                    contentDescription = if (isSaved) {
+                        "Unsave job"
+                    } else {
+                        "Save job"
+                        }
+                    )
+                }
                 Button( onClick = {} ) { Text("Apply Now") }
             }
         }

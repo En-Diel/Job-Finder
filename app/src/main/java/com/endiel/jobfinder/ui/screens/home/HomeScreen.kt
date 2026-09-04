@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.data.repository.sampleJobs
@@ -37,11 +39,15 @@ import com.endiel.jobfinder.ui.components.BottomNavBar
 import com.endiel.jobfinder.ui.components.CategoryChip
 import com.endiel.jobfinder.ui.components.JobCard
 import com.endiel.jobfinder.ui.components.JobSearchBar
+import com.endiel.jobfinder.ui.screens.jobs.JobsViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavController
 ) {
+    val viewModel: JobsViewModel = hiltViewModel()
+
+    val savedJobs by viewModel.savedJobs.collectAsState()
     // We'll use this when we create a viewModel
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("All") }
@@ -149,6 +155,10 @@ fun HomeScreen(
                 items(filteredJobs) { job ->
                     JobCard(
                         job = job,
+                        isSaved = savedJobs.any { it.id == job.id },
+                        onSaveClick = {
+                            viewModel.toggleSaveJob(job)
+                        },
                         onClick = {
                             //println("JOB CARD CLICKED: ${job.id}") // Testing the route
                             navController.navigate("job_details/${job.id}")

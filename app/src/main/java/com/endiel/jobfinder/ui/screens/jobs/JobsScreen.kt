@@ -53,6 +53,7 @@ fun JobsScreen(navController: NavController) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val filteredJobs by viewModel.filteredJobs.collectAsState()
+    val savedJobs by viewModel.savedJobs.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -136,6 +137,10 @@ fun JobsScreen(navController: NavController) {
                             items(filteredJobs) { job ->
                                 JobCard(
                                     job = job,
+                                    isSaved = savedJobs.any { it.id == job.id },
+                                    onSaveClick = {
+                                        viewModel.toggleSaveJob(job)
+                                    },
                                     onClick = {
                                         navController.navigate("job_details/${job.id}")
                                     }

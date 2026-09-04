@@ -1,3 +1,4 @@
+/*
 package com.endiel.jobfinder.ui.screens.search
 
 import androidx.compose.foundation.layout.Arrangement
@@ -60,3 +61,5 @@ fun SearchScreen(navController: NavController) {
         }
     }
 }
+
+ */

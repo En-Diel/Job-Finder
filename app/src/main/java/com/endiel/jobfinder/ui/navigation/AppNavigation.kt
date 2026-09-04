@@ -11,7 +11,7 @@ import com.endiel.jobfinder.ui.screens.jobs.JobsScreen
 import com.endiel.jobfinder.ui.screens.login.LoginScreen
 import com.endiel.jobfinder.ui.screens.profile.ProfileScreen
 import com.endiel.jobfinder.ui.screens.savedjobs.SavedJobsScreen
-import com.endiel.jobfinder.ui.screens.search.SearchScreen
+//import com.endiel.jobfinder.ui.screens.search.SearchScreen
 import com.endiel.jobfinder.ui.screens.settings.SettingsScreen
 import com.endiel.jobfinder.ui.screens.splash.SplashScreen
 
@@ -31,9 +31,9 @@ fun AppNavigation() {
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
-        composable(Screen.Search.route) {
-            SearchScreen(navController)
-        }
+//        composable(Screen.Search.route) {
+//            SearchScreen(navController)
+//        }
         composable(Screen.SavedJobs.route) {
             SavedJobsScreen(navController)
         }

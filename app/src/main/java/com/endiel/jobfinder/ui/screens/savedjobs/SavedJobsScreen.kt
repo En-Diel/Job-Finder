@@ -22,6 +22,10 @@ fun SavedJobsScreen(navController: NavController) {
         items(savedJobs) { job ->
             JobCard(
                 job = job,
+                isSaved = true,
+                onSaveClick = {
+                    viewModel.removeJob(job)
+                },
                 onClick = {
                 navController.navigate("job_details/${job.id}")
             })
