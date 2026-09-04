@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -46,9 +47,31 @@ import com.endiel.jobfinder.ui.components.JobSearchBar
 fun JobsScreen(navController: NavController) {
 
     val viewModel: JobsViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
-    val filteredJobs = viewModel.filteredJobs.collectAsState().value
+    //val filteredJobs = viewModel.filteredJobs.collectAsState().value
+    // Temporary filter
+    val filteredJobs = uiState.jobs.filter { job ->
+        val matchesSearch =
+            job.jobTitle.contains(
+                searchQuery,
+                ignoreCase = true
+            ) ||
+                    job.companyName.contains(
+                        searchQuery,
+                        ignoreCase = true
+                    )
+
+        val matchesCategory =
+            selectedCategory == "All" ||
+                    job.category.equals(
+                        selectedCategory,
+                        ignoreCase = true
+                    )
+
+        matchesSearch && matchesCategory
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -91,7 +114,13 @@ fun JobsScreen(navController: NavController) {
                 )
                 Text(text = "${filteredJobs.size} jobs found", modifier = Modifier.padding(start = 16.dp))
                 // SEARCH RESULTS
-                if (filteredJobs.isEmpty()) {
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier =Modifier.align(Alignment.CenterHorizontally)
+                    )
+                } else if (uiState.error != null) {
+                    Text(text = uiState.error ?: "Something went wrong")
+                } else if (filteredJobs.isEmpty()) {
                     Column() {
                         Text(text = "No jobs found", style = MaterialTheme.typography.titleMedium)
                         Spacer(modifier = Modifier.height(8.dp))

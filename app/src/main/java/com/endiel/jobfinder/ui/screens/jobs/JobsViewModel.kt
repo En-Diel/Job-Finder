@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class JobsViewModel @Inject constructor(private val repository: JobsRepository): ViewModel() {
@@ -23,6 +24,9 @@ class JobsViewModel @Inject constructor(private val repository: JobsRepository):
     private val _selectedCategory = MutableStateFlow("All")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
 
+    private val _uiState = MutableStateFlow(JobsUiState())
+    val uiState: StateFlow<JobsUiState> = _uiState.asStateFlow()
+
     val categories = listOf(
         "All",
         "Technology",
@@ -32,7 +36,34 @@ class JobsViewModel @Inject constructor(private val repository: JobsRepository):
         "Sales",
         "Engineering"
     )
-    private val allJobs = MutableStateFlow(sampleJobs)
+
+    //private val allJobs = MutableStateFlow(sampleJobs)
+
+    init {
+        loadJobs()
+    }
+
+    fun loadJobs() {
+        viewModelScope.launch {
+            _uiState.value = JobsUiState(
+                isLoading = true
+            )
+            try {
+                repository.getJobs().collect { jobs ->
+                    _uiState.value = JobsUiState(
+                        jobs = jobs,
+                        isLoading = false
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = JobsUiState(
+                    isLoading = false,
+                    error = "Failed to load jobs"
+                )
+            }
+        }
+    }
+/*
     val filteredJobs: StateFlow<List<Job>> = combine(
         allJobs,
         searchQuery,
@@ -66,6 +97,8 @@ class JobsViewModel @Inject constructor(private val repository: JobsRepository):
             // the first value when flow hasn't produced it's first result yet
             initialValue = sampleJobs
         )
+
+ */
 
     fun onSearchQueryChange(query: String) {
         _searchQuery.value = query
