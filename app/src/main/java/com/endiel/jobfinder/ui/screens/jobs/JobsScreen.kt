@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.data.repository.sampleJobs
@@ -41,6 +43,11 @@ import com.endiel.jobfinder.ui.components.JobSearchBar
 
 @Composable
 fun JobsScreen(navController: NavController) {
+
+    val viewModel: JobsViewModel = viewModel()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val selectedCategory by viewModel.selectedCategory.collectAsState()
+    val filteredJobs = viewModel.filteredJobs.collectAsState().value
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -55,50 +62,18 @@ fun JobsScreen(navController: NavController) {
                 .padding(innerPadding),
             horizontalAlignment = Alignment.Start
         ) {
-            var searchQuery by remember {
-                mutableStateOf("")
-            }
-            var selectedCategory by remember { mutableStateOf("All") }
 
-            val categories = listOf(
-                "All",
-                "Technology",
-                "Design",
-                "Finance",
-                "Marketing",
-                "Sales",
-                "Engineering"
-            )
-            // FILTERING
-            val filteredJobs = sampleJobs.filter { job ->
-                val matchesSearch = job.jobTitle.contains(
-                    searchQuery,
-                    ignoreCase = true
-                ) || job.companyName.contains(
-                    searchQuery,
-                    ignoreCase = true
-                )
-
-                val matchesCategory =
-                    selectedCategory == "All" ||
-                            job.category.equals(
-                                selectedCategory,
-                                ignoreCase = true
-                            )
-
-                matchesSearch && matchesCategory
-            }
             // CATEGORY FILTER CHIPS
             LazyRow(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, ),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(categories) { category ->
+                items(viewModel.categories) { category ->
                     CategoryChip(
                         category = category,
-                        selected = selectedCategory == category,
+                        selected = viewModel.selectedCategory.collectAsState().value == category,
                         onClick = {
-                            selectedCategory = category
+                            viewModel.onCategorySelected(category)
                         }
                     )
                 }
@@ -110,7 +85,7 @@ fun JobsScreen(navController: NavController) {
             ) {
                 // SEARCH BAR
                 JobSearchBar(
-                    searchQuery, onQueryChange = { searchQuery = it },
+                    searchQuery, onQueryChange = { viewModel.onSearchQueryChange(it) },
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
                 Text(text = "${filteredJobs.size} jobs found", modifier = Modifier.padding(start = 16.dp))
