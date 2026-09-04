@@ -102,7 +102,17 @@ fun JobsScreen(navController: NavController) {
                         modifier =Modifier.align(Alignment.CenterHorizontally)
                     )
                 } else if (uiState.error != null) {
-                    Text(text = uiState.error ?: "Something went wrong")
+                    Column(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = uiState.error ?: "Something went wrong")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(
+                            onClick = { viewModel.loadJobs() }
+                        ) { Text("Retry") }
+                    }
                 } else if (filteredJobs.isEmpty()) {
                     Column() {
                         Text(text = "No jobs found", style = MaterialTheme.typography.titleMedium)
