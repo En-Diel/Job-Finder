@@ -21,6 +21,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -123,14 +124,23 @@ fun JobsScreen(navController: NavController) {
                         )
                     }
                 } else {
-                    LazyColumn(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        items(filteredJobs) { job ->
-                            JobCard(
-                                job = job,
-                                onClick = {
-                                    navController.navigate("job_details/${job.id}")
-                                }
-                            )
+                    PullToRefreshBox(
+                        uiState.isLoading,
+                        onRefresh = { viewModel.loadJobs() },
+                        modifier = Modifier.fillMaxWidth().weight(1f)
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            items(filteredJobs) { job ->
+                                JobCard(
+                                    job = job,
+                                    onClick = {
+                                        navController.navigate("job_details/${job.id}")
+                                    }
+                                )
+                            }
                         }
                     }
                 }
