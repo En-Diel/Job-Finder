@@ -47,31 +47,11 @@ import com.endiel.jobfinder.ui.components.JobSearchBar
 fun JobsScreen(navController: NavController) {
 
     val viewModel: JobsViewModel = hiltViewModel()
+
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
-    //val filteredJobs = viewModel.filteredJobs.collectAsState().value
-    // Temporary filter
-    val filteredJobs = uiState.jobs.filter { job ->
-        val matchesSearch =
-            job.jobTitle.contains(
-                searchQuery,
-                ignoreCase = true
-            ) ||
-                    job.companyName.contains(
-                        searchQuery,
-                        ignoreCase = true
-                    )
-
-        val matchesCategory =
-            selectedCategory == "All" ||
-                    job.category.equals(
-                        selectedCategory,
-                        ignoreCase = true
-                    )
-
-        matchesSearch && matchesCategory
-    }
+    val filteredJobs by viewModel.filteredJobs.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -95,7 +75,7 @@ fun JobsScreen(navController: NavController) {
                 items(viewModel.categories) { category ->
                     CategoryChip(
                         category = category,
-                        selected = viewModel.selectedCategory.collectAsState().value == category,
+                        selected = selectedCategory == category,
                         onClick = {
                             viewModel.onCategorySelected(category)
                         }
@@ -109,8 +89,11 @@ fun JobsScreen(navController: NavController) {
             ) {
                 // SEARCH BAR
                 JobSearchBar(
-                    searchQuery, onQueryChange = { viewModel.onSearchQueryChange(it) },
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    searchQuery,
+                    onQueryChange = { query ->
+                        viewModel.onSearchQueryChange(query)
+                                    },
+                        modifier = Modifier.padding(horizontal = 16.dp)
                 )
                 Text(text = "${filteredJobs.size} jobs found", modifier = Modifier.padding(start = 16.dp))
                 // SEARCH RESULTS
