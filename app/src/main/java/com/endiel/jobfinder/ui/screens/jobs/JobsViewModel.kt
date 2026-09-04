@@ -41,20 +41,13 @@ class JobsViewModel @Inject constructor(private val repository: JobsRepository):
         "Engineering"
     )
 
-    // All jobs
-    private val allJobs: StateFlow<List<Job>> = repository.getJobs().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
-
     // Filtered jobs
     val filteredJobs: StateFlow<List<Job>> = combine(
-        allJobs,
+        uiState,
         searchQuery,
         selectedCategory
-    ) { jobs, query, category ->
-        jobs.filter { job ->
+    ) { state, query, category ->
+        state.jobs.filter { job ->
             val matchesSearch =
                 job.jobTitle.contains(
                     query,
