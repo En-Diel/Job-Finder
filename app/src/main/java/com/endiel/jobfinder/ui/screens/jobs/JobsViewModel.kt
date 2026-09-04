@@ -2,8 +2,11 @@ package com.endiel.jobfinder.ui.screens.jobs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.data.repository.sampleJobs
 import com.endiel.jobfinder.model.Job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class JobsViewModel: ViewModel() {
+@HiltViewModel
+class JobsViewModel @Inject constructor(private val repository: JobsRepository): ViewModel() {
+
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 

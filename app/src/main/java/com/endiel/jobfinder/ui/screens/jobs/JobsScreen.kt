@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
@@ -44,7 +45,7 @@ import com.endiel.jobfinder.ui.components.JobSearchBar
 @Composable
 fun JobsScreen(navController: NavController) {
 
-    val viewModel: JobsViewModel = viewModel()
+    val viewModel: JobsViewModel = hiltViewModel()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val filteredJobs = viewModel.filteredJobs.collectAsState().value
