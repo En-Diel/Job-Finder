@@ -35,7 +35,8 @@ import com.endiel.jobfinder.model.Job
 @Composable
 fun JobDetailsScreen(
     job: Job,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onApplyClick: () -> Unit
 ) {
     // Instantiate viewModel
     //val viewModel: JobDetailsViewModel = viewModel()
@@ -119,7 +120,7 @@ fun JobDetailsScreen(
                         }
                     ) {
                         Text(text = if (isSaved) "Job Saved" else "Save Job") }
-                    Button(onClick = {}) { Text("Apply Now") }
+                    Button( onClick = onApplyClick ) { Text("Apply Now") }
                 }
             }
         }

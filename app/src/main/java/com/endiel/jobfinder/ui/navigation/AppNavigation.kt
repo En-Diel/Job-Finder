@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.endiel.jobfinder.data.repository.sampleJobs
+import com.endiel.jobfinder.ui.screens.applyjob.ApplyJobScreen
 import com.endiel.jobfinder.ui.screens.home.HomeScreen
 import com.endiel.jobfinder.ui.screens.jobdetails.JobDetailsScreen
 import com.endiel.jobfinder.ui.screens.jobs.JobsScreen
@@ -31,9 +32,6 @@ fun AppNavigation() {
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
-//        composable(Screen.Search.route) {
-//            SearchScreen(navController)
-//        }
         composable(Screen.SavedJobs.route) {
             SavedJobsScreen(navController)
         }
@@ -57,9 +55,18 @@ fun AppNavigation() {
                     job = job,
                     onBackClick = {
                         navController.popBackStack()
+                    },
+                    onApplyClick = {
+                        navController.navigate(
+                            "apply_job/${job.id}"
+                        )
                     }
                 )
             }
+        }
+        composable(Screen.ApplyJob.route) { backStackEntry ->
+            val jobId = backStackEntry.arguments?.getString("jobId")
+            ApplyJobScreen(jobId = jobId)
         }
     }
 }

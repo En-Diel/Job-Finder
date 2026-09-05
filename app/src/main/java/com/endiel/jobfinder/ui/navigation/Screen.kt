@@ -6,7 +6,7 @@ sealed class Screen(
     data object Splash: Screen("splash")
     data object Login: Screen("login")
     data object Home: Screen("home")
-    data object Search: Screen("search")
+    data object ApplyJob: Screen("apply_job/{jobId}")
     data object SavedJobs: Screen("saved_jobs")
     data object Profile: Screen("profile")
     data object JobDetails: Screen("job_details/{jobId}")
