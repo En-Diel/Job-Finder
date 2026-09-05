@@ -12,5 +12,6 @@ data class JobApplicationEntity (
     val fullName: String,
     val email: String,
     val phone: String,
-    val coverLetter: String
+    val coverLetter: String,
+    val status: String = "Submitted"
 )

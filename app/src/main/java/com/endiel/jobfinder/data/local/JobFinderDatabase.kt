@@ -12,7 +12,7 @@ import com.endiel.jobfinder.data.local.dao.SavedJobDao
         JobApplicationEntity::class
     ],
     // We changed the version coz we changed the database schema by adding a new table
-    version = 2, exportSchema = false
+    version = 3, exportSchema = false
 )
 @TypeConverters(Converters::class) // Registering the converter
 abstract class JobFinderDatabase: RoomDatabase() {
