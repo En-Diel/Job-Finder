@@ -25,10 +25,4 @@ object RepositoryModule {
     fun provideJobsRepository(): JobsRepository {
         return JobsRepository()
     }
-
-    @Provides
-    @Singleton
-    fun provideApplicationRepository(): ApplicationRepository {
-        return ApplicationRepository()
-    }
 }

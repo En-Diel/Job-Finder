@@ -22,10 +22,10 @@ object DatabaseModule {
     // Hilt automatically provides the app context so you can initialize Room
     fun provideDatabase(@ApplicationContext context: Context): JobFinderDatabase {
         return Room.databaseBuilder(
-            context,
-            JobFinderDatabase::class.java,
-            "job_finder_database"
-        ).build()
+                context,
+                JobFinderDatabase::class.java,
+                "job_finder_database"
+            ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
