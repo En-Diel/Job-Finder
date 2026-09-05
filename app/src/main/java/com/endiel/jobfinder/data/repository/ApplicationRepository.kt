@@ -4,10 +4,12 @@ import com.endiel.jobfinder.data.local.JobApplicationEntity
 import com.endiel.jobfinder.data.local.dao.JobApplicationDao
 import com.endiel.jobfinder.model.JobApplication
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
 class ApplicationRepository @Inject constructor(private val jobApplicationDao: JobApplicationDao) {
+
     suspend fun submitApplication(application: JobApplication) {
         val entity = JobApplicationEntity(
             jobId = application.jobId,
@@ -17,5 +19,8 @@ class ApplicationRepository @Inject constructor(private val jobApplicationDao: J
             coverLetter = application.coverLetter
         )
         jobApplicationDao.insertApplication(entity)
+    }
+    fun getApplications(): Flow<List<JobApplicationEntity>> {
+        return jobApplicationDao.getApplications()
     }
 }
