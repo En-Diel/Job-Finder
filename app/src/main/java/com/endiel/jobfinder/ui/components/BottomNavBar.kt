@@ -19,7 +19,7 @@ fun BottomNavBar(navController: NavController) {
         BottomNavItem.Home,
         BottomNavItem.Jobs,
         BottomNavItem.Saved,
-        BottomNavItem.Settings
+        BottomNavItem.Profile
     )
 
     NavigationBar() {

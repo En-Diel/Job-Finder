@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Cases
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person2
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -28,9 +29,9 @@ sealed class BottomNavItem(
         title = "Saved",
         icon = Icons.Default.Bookmark
     )
-    data object Settings: BottomNavItem(
-        route = Screen.Settings.route,
-        title = "Settings",
-        icon = Icons.Default.Settings
+    data object Profile: BottomNavItem(
+        route = Screen.Profile.route,
+        title = "Profile",
+        icon = Icons.Default.Person2
     )
 }

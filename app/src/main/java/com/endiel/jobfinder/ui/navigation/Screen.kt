@@ -12,4 +12,5 @@ sealed class Screen(
     data object JobDetails: Screen("job_details/{jobId}")
     data object Settings: Screen("settings")
     data object Jobs: Screen("Jobs")
+    data object Applications: Screen("applications")
 }

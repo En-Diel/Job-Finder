@@ -20,5 +20,8 @@ fun ProfileScreen(navController: NavController) {
     ) {
         Text("Profile Screen")
         Button(onClick = { navController.popBackStack() }) { Text("Back") }
+        Button(onClick = { navController.navigate(Screen.Applications.route) }) {
+            Text("My Applications")
+        }
     }
 }
