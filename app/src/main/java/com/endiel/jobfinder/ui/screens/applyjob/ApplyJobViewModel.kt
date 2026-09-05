@@ -2,14 +2,18 @@ package com.endiel.jobfinder.ui.screens.applyjob
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.endiel.jobfinder.data.repository.ApplicationRepository
 import com.endiel.jobfinder.model.JobApplication
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ApplyJobViewModel : ViewModel() {
+@HiltViewModel
+class ApplyJobViewModel @Inject constructor(private val repository: ApplicationRepository) : ViewModel() {
     // _uiState (contains the current state of the UI)
     //
 
@@ -42,21 +46,30 @@ class ApplyJobViewModel : ViewModel() {
             _uiState.update {
                 it.copy(isSubmitting = true, error = null)
             }
-            // Create application object
-            val application = JobApplication(
-                jobId = jobId,
-                fullName = state.fullName,
-                email = state.email,
-                phone = state.phone,
-                state.coverLetter
-            )
-            // We'll save/send later
-            // We're just simulating the submisstion for now
-            _uiState.update {
-                it.copy(
-                    isSubmitting = false,
-                    isSubmitted = true
+
+            try {
+                // Create application object
+                val application = JobApplication(
+                    jobId = jobId,
+                    fullName = state.fullName,
+                    email = state.email,
+                    phone = state.phone,
+                    state.coverLetter
                 )
+                repository.submitApplication(application)
+                _uiState.update {
+                    it.copy(
+                        isSubmitting = false,
+                        isSubmitted = true
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isSubmitting = false,
+                        error = "Failed to submit application"
+                    )
+                }
             }
         }
     }

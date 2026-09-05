@@ -1,6 +1,7 @@
 package com.endiel.jobfinder.di
 
 import com.endiel.jobfinder.data.local.dao.SavedJobDao
+import com.endiel.jobfinder.data.repository.ApplicationRepository
 import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.data.repository.SavedJobsRepository
 import dagger.Module
@@ -23,5 +24,11 @@ object RepositoryModule {
     @Singleton
     fun provideJobsRepository(): JobsRepository {
         return JobsRepository()
+    }
+
+    @Provides
+    @Singleton
+    fun provideApplicationRepository(): ApplicationRepository {
+        return ApplicationRepository()
     }
 }

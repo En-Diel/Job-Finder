@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +34,7 @@ fun ApplyJobScreen(
     modifier: Modifier = Modifier
 ) {
 
-    val viewModel: ApplyJobViewModel = viewModel()
+    val viewModel: ApplyJobViewModel = hiltViewModel()
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -83,7 +84,7 @@ fun ApplyJobScreen(
             )
             OutlinedTextField(
                 value = uiState.coverLetter,
-                onValueChange = { viewModel.onPhoneChange(it) },
+                onValueChange = { viewModel.onCoverLetterChange(it) },
                 label = { Text("Cover Letter") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
