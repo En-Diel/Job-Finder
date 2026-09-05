@@ -4,5 +4,14 @@ enum class ApplicationStatus {
     SUBMITTED,
     UNDER_REVIEW,
     ACCEPTED,
-    REJECTED
+    REJECTED;
+
+    fun displayName(): String {
+        return when(this) {
+            SUBMITTED -> "Submitted"
+            UNDER_REVIEW -> "Under Review"
+            ACCEPTED -> "Accepted"
+            REJECTED -> "Rejected"
+        }
+    }
 }

@@ -86,7 +86,7 @@ private fun ApplicationCard(application: JobApplicationEntity, modifier: Modifie
             Text(text = "Phone: ${application.phone}")
             Text(text = "Cover letter:")
             Text(text = application.coverLetter)
-            Text(text = "Status: ${application.status}")
+            Text(text = "Status: ${application.status.displayName()}")
         }
     }
 }
