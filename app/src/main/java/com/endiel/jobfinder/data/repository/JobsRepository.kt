@@ -5,8 +5,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class JobsRepository {
+
     fun getJobs(): Flow<List<Job>> = flow {
         // By using emit, we assume the data come from API
         emit(sampleJobs)
+    }
+    fun getJobById(jobId: String): Job? {
+        return sampleJobs.find { it.id == jobId }
     }
 }

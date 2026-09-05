@@ -61,8 +61,8 @@ fun ApplicationsScreen(onBackClick: () -> Unit, modifier: Modifier = Modifier) {
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(applications) { application ->
-                    ApplicationCard(application = application)
+                items(applications) { item ->
+                    ApplicationCard(item = item)
                 }
             }
         }
@@ -70,7 +70,11 @@ fun ApplicationsScreen(onBackClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ApplicationCard(application: JobApplicationEntity, modifier: Modifier = Modifier) {
+private fun ApplicationCard(item: ApplicationItem, modifier: Modifier = Modifier) {
+
+    val application = item.application
+    val job = item.job
+
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 16.dp)) {
@@ -80,13 +84,20 @@ private fun ApplicationCard(application: JobApplicationEntity, modifier: Modifie
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "Job ID: ${application.jobId}")
-            Text(text = "Name: ${application.fullName}")
+            Text(text = job?.jobTitle ?: "Unknown Job")
+            Text(text = job?.companyName ?: "Unknown Company")
+            Text(text = job?.location ?: "Unknown Location")
+            Text(text = "Applicant: ${application.fullName}")
             Text(text = "Email: ${application.email}")
             Text(text = "Phone: ${application.phone}")
-            Text(text = "Cover letter:")
-            Text(text = application.coverLetter)
-            Text(text = "Status: ${application.status.displayName()}")
+            Text(text = "Cover Letter")
+            Text(
+                text = application.coverLetter,
+                maxLines = 3
+            )
+            Text(
+                text = "Status: ${application.status.displayName()}"
+            )
         }
     }
 }
