@@ -3,6 +3,7 @@ package com.endiel.jobfinder.di
 import android.content.Context
 import androidx.room.Room
 import com.endiel.jobfinder.data.local.JobFinderDatabase
+import com.endiel.jobfinder.data.local.dao.JobApplicationDao
 import com.endiel.jobfinder.data.local.dao.SavedJobDao
 import dagger.Module
 import dagger.Provides
@@ -30,5 +31,10 @@ object DatabaseModule {
     @Provides
     fun provideSavedJobDao(database: JobFinderDatabase): SavedJobDao {
         return database.savedJobDao()
+    }
+
+    @Provides
+    fun provideJobApplicationDao(database: JobFinderDatabase): JobApplicationDao {
+        return database.jobApplicationDao()
     }
 }
