@@ -16,11 +16,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,8 +50,9 @@ import com.endiel.jobfinder.ui.components.CategoryChip
 import com.endiel.jobfinder.ui.components.JobCard
 import com.endiel.jobfinder.ui.components.JobSearchBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JobsScreen(navController: NavController) {
+fun JobsScreen(onBackClick: () -> Unit, navController: NavController) {
 
     val viewModel: JobsViewModel = hiltViewModel()
 
@@ -61,6 +68,18 @@ fun JobsScreen(navController: NavController) {
             BottomNavBar(navController = navController)
         }
     ) { innerPadding ->
+
+        TopAppBar(
+            title = { Text("Jobs list") },
+            navigationIcon = {
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBackIosNew,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        )
 
         Column(
             modifier = Modifier

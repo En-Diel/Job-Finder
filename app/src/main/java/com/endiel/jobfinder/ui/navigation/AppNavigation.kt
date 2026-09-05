@@ -34,13 +34,14 @@ fun AppNavigation() {
             HomeScreen(navController)
         }
         composable(Screen.SavedJobs.route) {
-            SavedJobsScreen(navController)
+            SavedJobsScreen(onBackClick = { navController.popBackStack() }, navController)
         }
-        composable(Screen.Profile.route) {
-            ProfileScreen(navController)
+        composable(Screen.Profile.route) { backStackEntry ->
+
+            ProfileScreen(onBackClick = { navController.popBackStack() }, navController)
         }
         composable(Screen.Jobs.route) {
-            JobsScreen(navController)
+            JobsScreen(onBackClick = { navController.popBackStack() }, navController)
         }
         composable(Screen.Settings.route) {
             SettingsScreen(navController)
@@ -70,7 +71,7 @@ fun AppNavigation() {
             ApplyJobScreen(jobId = jobId)
         }
         composable(Screen.Applications.route) {
-            ApplicationsScreen()
+            ApplicationsScreen(onBackClick = { navController.popBackStack() })
         }
     }
 }
