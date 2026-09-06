@@ -6,7 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -17,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.endiel.jobfinder.model.ApplicationStatus
 import com.endiel.jobfinder.ui.screens.applications.ApplicationItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,6 +52,16 @@ fun ApplicationDetailsScreen(
             TopAppBar(
                 title = {
                     Text("Application Details")
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBackClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
                 }
             )
         }
@@ -59,52 +77,46 @@ fun ApplicationDetailsScreen(
         ) {
 
             Text(
-                text = job?.jobTitle ?: "Unknown Job"
+                text = job?.jobTitle ?: "Unknown Job",
+                style = MaterialTheme.typography.headlineSmall
             )
 
             Text(
-                text = job?.companyName ?: "Unknown Company"
+                text = job?.companyName ?: "Unknown Company",
+                style = MaterialTheme.typography.bodyLarge
             )
+            Text(text = job?.location ?: "Unknown Location")
+
+            HorizontalDivider()
+            ApplicationStatus(status = application.status)
+
+            HorizontalDivider()
 
             Text(
-                text = job?.location ?: "Unknown Location"
+                text = "APPLICANT INFORMATION",
+                style = MaterialTheme.typography.titleMedium
             )
-
             Text(
-                text = "Applicant"
+                text = application.fullName,
+                style = MaterialTheme.typography.bodyLarge
             )
+            Text(text = application.email)
+            Text(text = application.phone)
 
+            HorizontalDivider()
             Text(
-                text = application.fullName
+                text = "COVER LETTER",
+                style = MaterialTheme.typography.titleMedium
             )
-
-            Text(
-                text = "Email"
-            )
-
-            Text(
-                text = application.email
-            )
-
-            Text(
-                text = "Phone"
-            )
-
-            Text(
-                text = application.phone
-            )
-
-            Text(
-                text = "Cover Letter"
-            )
-
-            Text(
-                text = application.coverLetter
-            )
-
-            Text(
-                text = "Status: ${application.status.displayName()}"
-            )
+            Text(text = application.coverLetter)
         }
+    }
+}
+
+@Composable
+private fun ApplicationStatus(status: ApplicationStatus, modifier: Modifier = Modifier) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(text = "APPLICATION STATUS", style = MaterialTheme.typography.labelMedium)
+        Text(text = status.displayName(), style = MaterialTheme.typography.titleMedium)
     }
 }

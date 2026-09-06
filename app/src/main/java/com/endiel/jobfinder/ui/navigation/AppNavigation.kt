@@ -71,7 +71,7 @@ fun AppNavigation() {
         }
         composable(Screen.ApplyJob.route) { backStackEntry ->
             val jobId = backStackEntry.arguments?.getString("jobId")
-            ApplyJobScreen(jobId = jobId)
+            ApplyJobScreen(onBackClick = { navController.popBackStack() }, jobId = jobId)
         }
         composable(Screen.Applications.route) {
             ApplicationsScreen(onApplicationClick = { applicationId ->
