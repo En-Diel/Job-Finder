@@ -1,13 +1,16 @@
 package com.endiel.jobfinder.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.endiel.jobfinder.data.repository.sampleJobs
 import com.endiel.jobfinder.ui.screens.applications.ApplicationsScreen
+import com.endiel.jobfinder.ui.screens.applications.ApplicationsViewModel
 import com.endiel.jobfinder.ui.screens.applyjob.ApplyJobScreen
 import com.endiel.jobfinder.ui.screens.home.HomeScreen
+import com.endiel.jobfinder.ui.screens.jobdetails.ApplicationDetailsScreen
 import com.endiel.jobfinder.ui.screens.jobdetails.JobDetailsScreen
 import com.endiel.jobfinder.ui.screens.jobs.JobsScreen
 import com.endiel.jobfinder.ui.screens.login.LoginScreen
@@ -71,7 +74,21 @@ fun AppNavigation() {
             ApplyJobScreen(jobId = jobId)
         }
         composable(Screen.Applications.route) {
-            ApplicationsScreen(onBackClick = { navController.popBackStack() })
+            ApplicationsScreen(onApplicationClick = { applicationId ->
+                navController.navigate("application_details/$applicationId")
+            },onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.ApplicationDetails.route) { backStackEntry ->
+            val applicationId = backStackEntry.arguments?.getString("applicationId")?.toIntOrNull()
+
+            if (applicationId != null) {
+                ApplicationDetailsScreen(
+                    applicationId = applicationId,
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
     }
 }

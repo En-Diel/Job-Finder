@@ -19,6 +19,7 @@ class ApplicationsViewModel @Inject constructor(
     private val jobsRepository: JobsRepository
 ) :
     ViewModel() {
+
     val applications: StateFlow<List<ApplicationItem>> =
         applicationRepository.getApplications().map { applicationList ->
             applicationList.map { application ->
@@ -32,4 +33,9 @@ class ApplicationsViewModel @Inject constructor(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000), initialValue = emptyList()
             )
+    fun getApplicationById(applicationId: Int): ApplicationItem? {
+        return applications.value.find {
+            it.application.id == applicationId
+        }
+    }
 }

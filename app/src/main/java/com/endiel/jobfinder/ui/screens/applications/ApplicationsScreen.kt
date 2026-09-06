@@ -1,5 +1,6 @@
 package com.endiel.jobfinder.ui.screens.applications
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,7 @@ import com.endiel.jobfinder.data.local.JobApplicationEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ApplicationsScreen(onBackClick: () -> Unit, modifier: Modifier = Modifier) {
+fun ApplicationsScreen(onApplicationClick: (Int) -> Unit, onBackClick: () -> Unit, modifier: Modifier = Modifier) {
 
     val viewModel: ApplicationsViewModel = hiltViewModel()
     val applications by viewModel.applications.collectAsState()
@@ -62,7 +63,7 @@ fun ApplicationsScreen(onBackClick: () -> Unit, modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(applications) { item ->
-                    ApplicationCard(item = item)
+                    ApplicationCard(onClick = { onApplicationClick(item.application.id) }, item = item)
                 }
             }
         }
@@ -70,14 +71,15 @@ fun ApplicationsScreen(onBackClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ApplicationCard(item: ApplicationItem, modifier: Modifier = Modifier) {
+private fun ApplicationCard(onClick: () -> Unit, item: ApplicationItem, modifier: Modifier = Modifier) {
 
     val application = item.application
     val job = item.job
 
     Card(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp)) {
+        .padding(horizontal = 16.dp)
+        .clickable(onClick = onClick)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

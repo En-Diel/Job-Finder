@@ -15,4 +15,7 @@ interface JobApplicationDao {
 
     @Query("SELECT * FROM job_applications")
     fun getApplications(): Flow<List<JobApplicationEntity>>
+
+    @Query("SELECT * FROM job_applications WHERE id = :applicationId")
+    fun getApplicationId(applicationId: Int): Flow<JobApplicationEntity>
 }

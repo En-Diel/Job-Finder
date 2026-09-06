@@ -20,7 +20,12 @@ class ApplicationRepository @Inject constructor(private val jobApplicationDao: J
         )
         jobApplicationDao.insertApplication(entity)
     }
+
     fun getApplications(): Flow<List<JobApplicationEntity>> {
         return jobApplicationDao.getApplications()
+    }
+
+    fun getApplicationById(applicationId: Int): Flow<JobApplicationEntity?> {
+        return jobApplicationDao.getApplicationId(applicationId)
     }
 }
