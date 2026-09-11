@@ -46,7 +46,8 @@ import com.endiel.jobfinder.ui.navigation.Screen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onSavedJobsClick: () -> Unit
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -168,6 +169,10 @@ fun ProfileScreen(
                     text = uiState.location
                 )
             }
+            Button(
+                onClick = onSavedJobsClick,
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Saved Jobs") }
         }
     }
 }
