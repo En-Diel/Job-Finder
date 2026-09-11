@@ -30,9 +30,7 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileReposi
 
             repository.getProfile()
                 .collect { profile ->
-
                     if (profile != null) {
-
                         _uiState.update {
                             it.copy(
                                 fullName = profile.fullName,
@@ -41,9 +39,7 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileReposi
                                 location = profile.location
                             )
                         }
-
                     } else {
-
                         val defaultProfile = UserProfile(
                             fullName = "John Doe",
                             email = "johndoe@email.com",
@@ -94,8 +90,19 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileReposi
         }
     }
     fun saveProfile() {
-        _uiState.update {
-            it.copy(isEditing = false)
+        val state = _uiState.value
+
+        viewModelScope.launch {
+            val profile = UserProfile(
+                fullName = state.fullName,
+                email = state.email,
+                phone = state.phone,
+                location = state.location
+            )
+            repository.saveProfile(profile)
+            _uiState.update {
+                it.copy(isEditing = false)
+            }
         }
     }
 }
