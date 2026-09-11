@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -76,11 +77,11 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController) {
             horizontalAlignment = Alignment.Start
         ) {
             TopAppBar(
-                title = { Text("") },
+                title = { Text("Jobs") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBackIosNew,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
