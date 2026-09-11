@@ -50,7 +50,8 @@ fun AppNavigation() {
                             launchSingleTop = true
                         }
                               },
-                onSavedJobsClick = {navController.navigate(Screen.SavedJobs.route)}
+                onSavedJobsClick = { navController.navigate(Screen.SavedJobs.route) },
+                onApplicationsClick = { navController.navigate(Screen.Applications.route) }
             )
         }
         composable(Screen.Jobs.route) {
