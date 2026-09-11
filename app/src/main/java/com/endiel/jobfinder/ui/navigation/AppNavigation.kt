@@ -51,14 +51,16 @@ fun AppNavigation() {
                         }
                               },
                 onSavedJobsClick = { navController.navigate(Screen.SavedJobs.route) },
-                onApplicationsClick = { navController.navigate(Screen.Applications.route) }
+                onApplicationsClick = { navController.navigate(Screen.Applications.route) },
+                onSettingsClick = { navController.navigate(Screen.Settings.route) }
             )
         }
         composable(Screen.Jobs.route) {
             JobsScreen(onBackClick = { navController.popBackStack() }, navController)
         }
         composable(Screen.Settings.route) {
-            SettingsScreen(navController)
+            SettingsScreen(onBackClick = { navController.popBackStack() }, navController
+            )
         }
         composable("job_details/{jobId}") { backStackEntry ->
 
