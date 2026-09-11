@@ -27,41 +27,55 @@ fun AppNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
-
+        // SPLASH ROUTE
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }
+        // LOGIN ROUTE
         composable(Screen.Login.route) {
             LoginScreen(navController)
         }
+        // HOME ROUTE
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
+        // SAVED JOBS ROUTE
         composable(Screen.SavedJobs.route) {
             SavedJobsScreen(onBackClick = { navController.popBackStack() }, navController)
         }
+        // PROFILE ROUTE
         composable(Screen.Profile.route) { backStackEntry ->
             ProfileScreen(
                 onBackClick = {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Home.route) {
-                            inclusive = false
+                            inclusive = false // Keep the destination specified in the popUpTo
+                        // in the back stack
                         }
-                            launchSingleTop = true
+                            launchSingleTop = true // Prevents duplicate copies of the same
+                        // destination in the backstack
                         }
                               },
                 onSavedJobsClick = { navController.navigate(Screen.SavedJobs.route) },
                 onApplicationsClick = { navController.navigate(Screen.Applications.route) },
-                onSettingsClick = { navController.navigate(Screen.Settings.route) }
+                onSettingsClick = { navController.navigate(Screen.Settings.route) },
+                onLogoutClick = { navController.navigate(Screen.Login.route) {
+                    popUpTo(Screen.Home.route) {
+                        inclusive = true
+                    }
+                } }
             )
         }
+        // JOBS ROUTE
         composable(Screen.Jobs.route) {
             JobsScreen(onBackClick = { navController.popBackStack() }, navController)
         }
+        // SETTINGS ROUTE
         composable(Screen.Settings.route) {
             SettingsScreen(onBackClick = { navController.popBackStack() }, navController
             )
         }
+        // JOB DETAILS ROUTE
         composable("job_details/{jobId}") { backStackEntry ->
 
             val jobId = backStackEntry.arguments?.getString("jobId")
@@ -82,15 +96,20 @@ fun AppNavigation() {
                 )
             }
         }
+        // APPLY JOB ROUTE
         composable(Screen.ApplyJob.route) { backStackEntry ->
             val jobId = backStackEntry.arguments?.getString("jobId")
             ApplyJobScreen(onBackClick = { navController.popBackStack() }, jobId = jobId)
         }
+        // APPLICATIONS ROUTE
         composable(Screen.Applications.route) {
-            ApplicationsScreen(onApplicationClick = { applicationId ->
+            ApplicationsScreen(
+                onApplicationClick = { applicationId ->
                 navController.navigate("application_details/$applicationId")
-            },onBackClick = { navController.popBackStack() })
+            },
+                onBackClick = { navController.popBackStack() })
         }
+        // APPLICATION DETAILS ROUTE
         composable(Screen.ApplicationDetails.route) { backStackEntry ->
             val applicationId = backStackEntry.arguments?.getString("applicationId")?.toIntOrNull()
 

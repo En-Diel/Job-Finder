@@ -27,24 +27,30 @@ import com.endiel.jobfinder.data.local.JobApplicationEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ApplicationsScreen(onApplicationClick: (Int) -> Unit, onBackClick: () -> Unit, modifier: Modifier = Modifier) {
+fun ApplicationsScreen(
+    onApplicationClick: (Int) -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     val viewModel: ApplicationsViewModel = hiltViewModel()
     val applications by viewModel.applications.collectAsState()
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+    Scaffold(
+        modifier = Modifier.fillMaxSize(), {
         TopAppBar(
-            title = { Text("My applications") },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
-                        contentDescription = "Back"
-                    )
-                }
+        title = { Text("My applications") },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBackIosNew,
+                    contentDescription = "Back"
+                )
             }
-        )
+        }
+    )
+    }) { innerPadding ->
+
         if (applications.isEmpty()) {
             Column(
                 modifier = Modifier
@@ -63,7 +69,10 @@ fun ApplicationsScreen(onApplicationClick: (Int) -> Unit, onBackClick: () -> Uni
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(applications) { item ->
-                    ApplicationCard(onClick = { onApplicationClick(item.application.id) }, item = item)
+                    ApplicationCard(
+                        onClick = { onApplicationClick(item.application.id) },
+                        item = item
+                    )
                 }
             }
         }
@@ -71,15 +80,21 @@ fun ApplicationsScreen(onApplicationClick: (Int) -> Unit, onBackClick: () -> Uni
 }
 
 @Composable
-private fun ApplicationCard(onClick: () -> Unit, item: ApplicationItem, modifier: Modifier = Modifier) {
+private fun ApplicationCard(
+    onClick: () -> Unit,
+    item: ApplicationItem,
+    modifier: Modifier = Modifier
+) {
 
     val application = item.application
     val job = item.job
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp)
-        .clickable(onClick = onClick)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .clickable(onClick = onClick)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

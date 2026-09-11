@@ -49,7 +49,8 @@ fun ProfileScreen(
     onBackClick: () -> Unit,
     onSavedJobsClick: () -> Unit,
     onApplicationsClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -183,6 +184,10 @@ fun ProfileScreen(
                 onClick = onSettingsClick,
                 modifier = Modifier.fillMaxWidth()
             ) { Text("Settings") }
+            Button(
+                onClick = onLogoutClick,
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Log out") }
         }
     }
 }
