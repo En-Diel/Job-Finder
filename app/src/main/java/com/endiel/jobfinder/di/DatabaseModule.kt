@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.endiel.jobfinder.data.local.JobFinderDatabase
 import com.endiel.jobfinder.data.local.dao.JobApplicationDao
+import com.endiel.jobfinder.data.local.dao.ProfileDao
 import com.endiel.jobfinder.data.local.dao.SavedJobDao
 import dagger.Module
 import dagger.Provides
@@ -36,5 +37,10 @@ object DatabaseModule {
     @Provides
     fun provideJobApplicationDao(database: JobFinderDatabase): JobApplicationDao {
         return database.jobApplicationDao()
+    }
+
+    @Provides
+    fun provideProfileDao(database: JobFinderDatabase): ProfileDao {
+        return database.profileDao()
     }
 }

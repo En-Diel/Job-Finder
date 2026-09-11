@@ -69,25 +69,23 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController) {
         }
     ) { innerPadding ->
 
-        TopAppBar(
-            title = { Text("Jobs list") },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
-                        contentDescription = "Back"
-                    )
-                }
-            }
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             horizontalAlignment = Alignment.Start
         ) {
-
+            TopAppBar(
+                title = { Text("") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
             // CATEGORY FILTER CHIPS
             LazyRow(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, ),

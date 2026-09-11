@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.endiel.jobfinder.ui.navigation.BottomNavItem
+import com.endiel.jobfinder.ui.navigation.Screen
 
 @Composable
 fun BottomNavBar(navController: NavController) {
@@ -28,7 +29,7 @@ fun BottomNavBar(navController: NavController) {
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) {
+                        popUpTo(Screen.Home.route) {
                             saveState = true
                         }
                         launchSingleTop = true
