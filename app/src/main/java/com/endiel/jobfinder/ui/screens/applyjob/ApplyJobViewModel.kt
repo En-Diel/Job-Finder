@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ApplyJobViewModel @Inject constructor(private val repository: ApplicationRepository) : ViewModel() {
+class ApplyJobViewModel @Inject constructor(private val repository: ApplicationRepository) :
+    ViewModel() {
     // _uiState (contains the current state of the UI)
     //
 
@@ -38,8 +39,14 @@ class ApplyJobViewModel @Inject constructor(private val repository: ApplicationR
 
     fun submitApplication(jobId: String) {
         val state = _uiState.value
-        if (state.fullName.isBlank() || state.email.isBlank() || state.phone.isBlank() || state.coverLetter.isBlank()) {
-            _uiState.update { it.copy(error = "Please fill in all fields") }
+        if (state.fullName.isBlank() ||
+            state.email.isBlank() ||
+            state.phone.isBlank() ||
+            state.coverLetter.isBlank()
+            ) {
+            _uiState.update {
+                it.copy(error = "Please fill in all fields")
+            }
             return
         }
         viewModelScope.launch {
@@ -48,26 +55,24 @@ class ApplyJobViewModel @Inject constructor(private val repository: ApplicationR
             }
 
             try {
-                // Create application object
-                val application = JobApplication(
-                    jobId = jobId,
-                    fullName = state.fullName,
-                    email = state.email,
-                    phone = state.phone,
-                    state.coverLetter
+                repository.submitApplication(
+                    JobApplication(
+                        jobId = jobId,
+                        fullName = state.fullName,
+                        email = state.email,
+                        phone = state.phone,
+                        state.coverLetter
+                    )
                 )
-                repository.submitApplication(application)
                 _uiState.update {
                     it.copy(
-                        isSubmitting = false,
-                        isSubmitted = true
+                        isSubmitting = false, isSubmitted = true
                     )
                 }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
-                        isSubmitting = false,
-                        error = "Failed to submit application"
+                        isSubmitting = false, error = "Failed to submit application"
                     )
                 }
             }

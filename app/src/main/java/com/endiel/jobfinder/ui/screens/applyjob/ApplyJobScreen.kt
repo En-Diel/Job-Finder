@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,19 +31,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplyJobScreen(
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     jobId: String?,
-    modifier: Modifier = Modifier
+    onSubmitSuccess: () -> Unit,
+    viewModel: ApplyJobViewModel = hiltViewModel()
 ) {
-
-    val viewModel: ApplyJobViewModel = hiltViewModel()
-
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(uiState.isSubmitted) {
+        if (uiState.isSubmitted) {
+            onSubmitSuccess()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -112,6 +118,7 @@ fun ApplyJobScreen(
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
+            // SUBMIT JOB BUTTON
             Button(
                 onClick = {
                     if (jobId != null) {

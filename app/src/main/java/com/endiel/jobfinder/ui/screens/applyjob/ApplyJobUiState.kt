@@ -7,5 +7,6 @@ data class ApplyJobUiState(
     val coverLetter: String = "",
     val isSubmitting: Boolean = false,
     val isSubmitted: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val submitSuccess: Boolean = false
 )

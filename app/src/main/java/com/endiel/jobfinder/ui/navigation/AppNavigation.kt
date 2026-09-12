@@ -50,20 +50,22 @@ fun AppNavigation() {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Home.route) {
                             inclusive = false // Keep the destination specified in the popUpTo
-                        // in the back stack
+                            // in the back stack
                         }
-                            launchSingleTop = true // Prevents duplicate copies of the same
+                        launchSingleTop = true // Prevents duplicate copies of the same
                         // destination in the backstack
-                        }
-                              },
+                    }
+                },
                 onSavedJobsClick = { navController.navigate(Screen.SavedJobs.route) },
                 onApplicationsClick = { navController.navigate(Screen.Applications.route) },
                 onSettingsClick = { navController.navigate(Screen.Settings.route) },
-                onLogoutClick = { navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Home.route) {
-                        inclusive = true
+                onLogoutClick = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Home.route) {
+                            inclusive = true
+                        }
                     }
-                } }
+                }
             )
         }
         // JOBS ROUTE
@@ -72,7 +74,8 @@ fun AppNavigation() {
         }
         // SETTINGS ROUTE
         composable(Screen.Settings.route) {
-            SettingsScreen(onBackClick = { navController.popBackStack() }, navController
+            SettingsScreen(
+                onBackClick = { navController.popBackStack() }, navController
             )
         }
         // JOB DETAILS ROUTE
@@ -99,14 +102,21 @@ fun AppNavigation() {
         // APPLY JOB ROUTE
         composable(Screen.ApplyJob.route) { backStackEntry ->
             val jobId = backStackEntry.arguments?.getString("jobId")
-            ApplyJobScreen(onBackClick = { navController.popBackStack() }, jobId = jobId)
+            ApplyJobScreen(
+                onBackClick = { navController.popBackStack() },
+                jobId = jobId,
+                onSubmitSuccess = {
+                    navController.navigate(
+                        Screen.Applications.route
+                    ) { popUpTo(Screen.ApplyJob.route) { inclusive = true } }
+                })
         }
         // APPLICATIONS ROUTE
         composable(Screen.Applications.route) {
             ApplicationsScreen(
                 onApplicationClick = { applicationId ->
-                navController.navigate("application_details/$applicationId")
-            },
+                    navController.navigate("application_details/$applicationId")
+                },
                 onBackClick = { navController.popBackStack() })
         }
         // APPLICATION DETAILS ROUTE
