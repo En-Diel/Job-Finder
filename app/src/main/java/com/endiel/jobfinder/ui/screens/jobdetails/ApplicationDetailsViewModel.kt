@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.repository.ApplicationRepository
 import com.endiel.jobfinder.data.repository.JobsRepository
+import com.endiel.jobfinder.model.ApplicationStatus
 import com.endiel.jobfinder.ui.screens.applications.ApplicationItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +38,15 @@ class ApplicationDetailsViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun updateApplicationStatus(applicationId: Int, status: ApplicationStatus) {
+        viewModelScope.launch {
+            applicationRepository.updateApplicationStatus(
+                applicationId = applicationId,
+                status = status
+            )
         }
     }
 }

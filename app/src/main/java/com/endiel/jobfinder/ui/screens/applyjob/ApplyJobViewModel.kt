@@ -1,5 +1,6 @@
 package com.endiel.jobfinder.ui.screens.applyjob
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.repository.ApplicationRepository

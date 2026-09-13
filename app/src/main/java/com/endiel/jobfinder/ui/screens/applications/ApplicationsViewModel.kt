@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.local.JobApplicationEntity
 import com.endiel.jobfinder.data.repository.ApplicationRepository
 import com.endiel.jobfinder.data.repository.JobsRepository
+import com.endiel.jobfinder.model.ApplicationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.collections.emptyList
 

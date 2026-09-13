@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.endiel.jobfinder.data.local.JobApplicationEntity
+import com.endiel.jobfinder.model.ApplicationStatus
 import com.endiel.jobfinder.model.JobApplication
 import kotlinx.coroutines.flow.Flow
 
@@ -17,5 +18,8 @@ interface JobApplicationDao {
     fun getApplications(): Flow<List<JobApplicationEntity>>
 
     @Query("SELECT * FROM job_applications WHERE id = :applicationId")
-    fun getApplicationId(applicationId: Int): Flow<JobApplicationEntity>
+    fun getApplicationId(applicationId: Int): Flow<JobApplicationEntity?>
+
+    @Query("UPDATE job_applications SET status = :status WHERE id = :applicationId")
+    suspend fun updateStatus(applicationId: Int, status: ApplicationStatus)
 }

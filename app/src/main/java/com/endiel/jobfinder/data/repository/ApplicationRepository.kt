@@ -2,6 +2,7 @@ package com.endiel.jobfinder.data.repository
 
 import com.endiel.jobfinder.data.local.JobApplicationEntity
 import com.endiel.jobfinder.data.local.dao.JobApplicationDao
+import com.endiel.jobfinder.model.ApplicationStatus
 import com.endiel.jobfinder.model.JobApplication
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -27,5 +28,12 @@ class ApplicationRepository @Inject constructor(private val jobApplicationDao: J
 
     fun getApplicationById(applicationId: Int): Flow<JobApplicationEntity?> {
         return jobApplicationDao.getApplicationId(applicationId)
+    }
+
+    suspend fun updateApplicationStatus(applicationId: Int, status: ApplicationStatus) {
+        jobApplicationDao.updateStatus(
+            applicationId = applicationId,
+            status = status
+        )
     }
 }
