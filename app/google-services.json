@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "397980803477",
+    "project_id": "job-finder-754fd",
+    "storage_bucket": "job-finder-754fd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397980803477:android:917425777485084736169c",
+        "android_client_info": {
+          "package_name": "com.endiel.jobfinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy9pgEikpYcECVFSWRpMf7jsWn7mNrtuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

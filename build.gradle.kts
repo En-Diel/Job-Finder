@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.ksp) apply false
     // Hilt
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.google.services) apply false
 }

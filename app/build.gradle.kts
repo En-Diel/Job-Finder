@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt) // Applying the plugin
     //id("com.google.devtools.ksp")
+    alias(libs.plugins.google.services) // Apply the plugin here
 }
 
 android {
@@ -80,5 +81,10 @@ dependencies {
     implementation("androidx.room:room-runtime:2.7.2")
     implementation("androidx.room:room-ktx:2.7.2")
     ksp("androidx.room:room-compiler:2.7.2")
+    // BoM
+    implementation(platform(libs.firebase.bom))
+    // Firebase
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
 
 }
