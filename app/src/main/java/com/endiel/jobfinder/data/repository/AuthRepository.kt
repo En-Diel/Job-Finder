@@ -33,4 +33,8 @@ class AuthRepository @Inject constructor(
     fun isUserLoggedIn(): Boolean {
         return firebaseAuth.currentUser != null
     }
+
+    suspend fun resetPassword(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email).await()
+    }
 }

@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -67,7 +69,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
             enabled = !uiState.isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            if (uiState.isLoading){
+            if (uiState.isLoading) {
                 CircularProgressIndicator()
             } else {
                 Text("Login")
@@ -83,5 +85,19 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
         ) {
             Text("Create an Account")
         }
+
+        if (uiState.isPasswordResetSent) {
+            Text(
+                text = "Password reset email sent. Check your inbox and spam folder.",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        TextButton(
+            onClick = { viewModel.resetPassword() },
+            enabled = !uiState.isLoading
+        ) { Text("Forgot password?") }
     }
 }

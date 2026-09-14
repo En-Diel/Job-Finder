@@ -16,6 +16,7 @@ data class AuthUiState(
     val password: String = "",
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false,
+    val isPasswordResetSent: Boolean = false,
     val error: String? = null
 )
 
@@ -172,4 +173,43 @@ class AuthViewModel @Inject constructor(
                 "Authentication failed, try again."
         }
     }
+
+      fun resetPassword() {
+        val email = _uiState.value.email
+
+        if (email.isBlank()) {
+            _uiState.update {
+                it.copy(
+                    error = "Please enter your email address"
+                )
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    isPasswordResetSent = false
+                )
+            }
+            try {
+                repository.resetPassword(email)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isPasswordResetSent = true
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message ?: "Password reset failed"
+                    )
+                }
+            }
+        }
+      }
 }
