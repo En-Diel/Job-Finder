@@ -94,4 +94,45 @@ class AuthViewModel @Inject constructor(
             it.copy(isLoggedIn = false)
         }
     }
+
+    fun register() {
+        val state = _uiState.value
+
+        if (state.email.isBlank() || state.password.isBlank()) {
+            _uiState.update {
+                it.copy(
+                    error = "Please enter your email and password"
+                )
+            }
+            return
+        }
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
+
+            try {
+                repository.register(
+                    email = state.email,
+                    password = state.password
+                )
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isLoggedIn = true
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message ?: "Registration failed"
+                    )
+                }
+            }
+        }
+    }
 }

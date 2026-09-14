@@ -73,5 +73,15 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                 Text("Login")
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                navController.navigate(Screen.Register.route)
+            },
+            enabled = !uiState.isLoading
+        ) {
+            Text("Create an Account")
+        }
     }
 }

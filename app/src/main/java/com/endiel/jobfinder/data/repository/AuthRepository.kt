@@ -17,7 +17,7 @@ class AuthRepository @Inject constructor(
             .await()
     }
 
-    suspend fun register(
+     suspend fun register(
         email: String,
         password: String
     ) {
