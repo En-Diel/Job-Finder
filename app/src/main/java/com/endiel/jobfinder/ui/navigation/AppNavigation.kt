@@ -51,6 +51,7 @@ fun AppNavigation() {
         // PROFILE ROUTE
         composable(Screen.Profile.route) { backStackEntry ->
             ProfileScreen(
+                navController = navController,
                 onBackClick = {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Home.route) {
@@ -64,13 +65,6 @@ fun AppNavigation() {
                 onSavedJobsClick = { navController.navigate(Screen.SavedJobs.route) },
                 onApplicationsClick = { navController.navigate(Screen.Applications.route) },
                 onSettingsClick = { navController.navigate(Screen.Settings.route) },
-                onLogoutClick = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Home.route) {
-                            inclusive = true
-                        }
-                    }
-                }
             )
         }
         // JOBS ROUTE

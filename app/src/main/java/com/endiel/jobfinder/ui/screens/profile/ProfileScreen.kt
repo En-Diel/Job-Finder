@@ -42,15 +42,17 @@ import androidx.navigation.NavController
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.model.UserProfile
 import com.endiel.jobfinder.ui.navigation.Screen
+import com.endiel.jobfinder.ui.screens.auth.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
+    navController: NavController,
     onBackClick: () -> Unit,
     onSavedJobsClick: () -> Unit,
     onApplicationsClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -185,7 +187,14 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxWidth()
             ) { Text("Settings") }
             Button(
-                onClick = onLogoutClick,
+                onClick = {
+                    authViewModel.logout()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                          },
                 modifier = Modifier.fillMaxWidth()
             ) { Text("Log out") }
         }
