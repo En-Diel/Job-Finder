@@ -80,7 +80,7 @@ class AuthViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = e.message ?: "Login failed."
+                        error = getAuthErrorMessage(e)
                     )
                 }
             }
@@ -129,10 +129,47 @@ class AuthViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = e.message ?: "Registration failed"
+                        error = getAuthErrorMessage(e)
                     )
                 }
             }
+        }
+    }
+
+    private fun getAuthErrorMessage(exception: Exception): String {
+        return when {
+            exception.message?.contains(
+                "email message is badly formatted",
+                ignoreCase = true
+            ) == true -> "Please enter a valid email address."
+
+            exception.message?.contains(
+                "password is invalid",
+                ignoreCase = true
+            ) == true -> "Incorrect password"
+
+            exception.message?.contains(
+                "no user record",
+                ignoreCase = true
+            ) == true -> "No account found with this email."
+
+            exception.message?.contains(
+                "email address is already in use",
+                ignoreCase = true
+            ) == true -> "An account with this email already exist."
+
+            exception.message?.contains(
+                "email address is already in use",
+                ignoreCase = true
+            ) == true -> "An account with this email already exists."
+
+            exception.message?.contains(
+                "password must be 6 characters",
+                ignoreCase = true
+            ) == true -> "Password must be at least 6 characters."
+
+            else ->
+                "Authentication failed, try again."
         }
     }
 }
