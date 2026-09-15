@@ -3,6 +3,7 @@ package com.endiel.jobfinder.ui.screens.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.repository.AuthRepository
+import com.google.firebase.auth.FirebaseAuthException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -155,39 +156,40 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun getAuthErrorMessage(exception: Exception): String {
-        return when {
-            exception.message?.contains(
-                "email message is badly formatted",
-                ignoreCase = true
-            ) == true -> "Please enter a valid email address."
 
-            exception.message?.contains(
-                "password is invalid",
-                ignoreCase = true
-            ) == true -> "Incorrect password"
+        if (exception !is FirebaseAuthException) {
+            return "Authentification failed. Please try again"
+        }
 
-            exception.message?.contains(
-                "no user record",
-                ignoreCase = true
-            ) == true -> "No account found with this email."
+        return when(exception.errorCode) {
 
-            exception.message?.contains(
-                "email address is already in use",
-                ignoreCase = true
-            ) == true -> "An account with this email already exist."
+            "ERROR_INVALID_EMAIL" ->
+                "Please enter a valid email address."
 
-            exception.message?.contains(
-                "email address is already in use",
-                ignoreCase = true
-            ) == true -> "An account with this email already exists."
+            "ERROR_INVALID_CREDENTIAL" ->
+                "Incorrect email or password."
 
-            exception.message?.contains(
-                "password must be 6 characters",
-                ignoreCase = true
-            ) == true -> "Password must be at least 6 characters."
+            "ERROR_USER_NOT_FOUND" ->
+                "No account found with this email."
+
+            "ERROR_EMAIL_ALREADY_IN_USE" ->
+                "An account with this email already exists."
+
+            "ERROR_WEAK_PASSWORD" ->
+                "Password is too weak. Please choose a stronger password."
+
+            "ERROR_USER_DISABLED" ->
+                "This account has been disabled."
+
+            "ERROR_TOO_MANY_REQUESTS" ->
+                "Too many attempts. Please try again later."
+
+            "ERROR_NETWORK_REQUEST_FAILED" ->
+                "Network error. Please check your internet connection."
 
             else ->
-                "Authentication failed, try again."
+                "Authentication failed. Please try again."
+
         }
     }
 
