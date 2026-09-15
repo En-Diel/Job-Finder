@@ -37,4 +37,12 @@ class AuthRepository @Inject constructor(
     suspend fun resetPassword(email: String) {
         firebaseAuth.sendPasswordResetEmail(email).await()
     }
+
+    suspend fun sendEmailVerification() {
+        firebaseAuth.currentUser?.sendEmailVerification()?.await()
+    }
+
+    fun isEmailVerified(): Boolean {
+        return firebaseAuth.currentUser?.isEmailVerified == true
+    }
 }

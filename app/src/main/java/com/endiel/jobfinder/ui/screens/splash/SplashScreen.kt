@@ -29,8 +29,9 @@ fun SplashScreen(navController: NavController, viewModel: AuthViewModel = hiltVi
 
             delay(1500.milliseconds)
             val isLoggedIn = viewModel.checkAuthState()
+            val isEmailVerified = viewModel.checkEmailVerification()
 
-            if (isLoggedIn) {
+            if (isLoggedIn && isEmailVerified) {
                 navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Splash.route) {
                         inclusive = true

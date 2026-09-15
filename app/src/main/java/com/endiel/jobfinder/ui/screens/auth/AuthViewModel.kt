@@ -17,6 +17,7 @@ data class AuthUiState(
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false,
     val isPasswordResetSent: Boolean = false,
+    val isVerificationEmailSent: Boolean = false,
     val error: String? = null
 )
 
@@ -70,10 +71,22 @@ class AuthViewModel @Inject constructor(
                     password = state.password
                 )
 
+                if (!repository.isEmailVerified()) {
+                    repository.logout()
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isLoggedIn = false,
+                            error = "Please verify your email before logging in"
+                        )
+                    }
+                    return@launch
+                }
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        isLoggedIn = true
+                        isLoggedIn = true,
+                        error = null
                     )
                 }
 
@@ -120,10 +133,14 @@ class AuthViewModel @Inject constructor(
                     email = state.email,
                     password = state.password
                 )
+
+                repository.sendEmailVerification()
+
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        isLoggedIn = true
+                        isLoggedIn = true,
+                        isVerificationEmailSent = true
                     )
                 }
             } catch (e: Exception) {
@@ -212,7 +229,40 @@ class AuthViewModel @Inject constructor(
             }
         }
       }
+
     fun checkAuthState(): Boolean {
         return repository.isUserLoggedIn()
+    }
+
+    fun sendEmailVerification() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    isVerificationEmailSent = false
+                )
+            }
+            try {
+                repository.sendEmailVerification()
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isVerificationEmailSent = true
+                    )
+                }
+            } catch(e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = "Failed to send email verification"
+                    )
+                }
+        }
+        }
+    }
+
+    fun checkEmailVerification(): Boolean {
+        return repository.isEmailVerified()
     }
 }

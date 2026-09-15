@@ -86,6 +86,14 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
+        if (uiState.isVerificationEmailSent) {
+            Text(
+                text = "Verification email sent. Please check your inbox",
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(16.dp ))
+        }
+
         Button(
             onClick = {
                 viewModel.register()

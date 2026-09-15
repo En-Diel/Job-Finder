@@ -64,6 +64,13 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        uiState.error?.let { errorMessage ->
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         Button(
             onClick = { viewModel.login() },
             enabled = !uiState.isLoading,
