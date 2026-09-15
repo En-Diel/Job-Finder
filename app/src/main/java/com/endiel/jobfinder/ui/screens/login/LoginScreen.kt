@@ -71,6 +71,13 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
+        if (uiState.error?.contains("verify your email", ignoreCase = true) == true) {
+            TextButton(
+                onClick = { viewModel.resendVerificationEmail() },
+                enabled = !uiState.isLoading
+            ) { Text("Resend Verification Email") }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         Button(
             onClick = { viewModel.login() },
             enabled = !uiState.isLoading,
@@ -100,6 +107,14 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                 style = MaterialTheme.typography.bodyMedium
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        if (uiState.isVerificationEmailSent) {
+            Text(
+                text = "Verification email sent. Check your inbox and spam folder.",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.bodyMedium
+            )
             Spacer(modifier = Modifier.height(16.dp))
         }
         TextButton(
