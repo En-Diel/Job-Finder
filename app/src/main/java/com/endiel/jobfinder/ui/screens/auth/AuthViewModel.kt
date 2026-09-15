@@ -212,4 +212,7 @@ class AuthViewModel @Inject constructor(
             }
         }
       }
+    fun checkAuthState(): Boolean {
+        return repository.isUserLoggedIn()
+    }
 }
