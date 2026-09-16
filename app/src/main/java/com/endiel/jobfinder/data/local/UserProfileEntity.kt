@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey
 data class UserProfileEntity(
 
     @PrimaryKey
-    val id: Int = 1,
+    val userId: String,
 
+    // This contains Firebase's users unique Id
     val fullName: String,
     val email: String,
     val phone: String,

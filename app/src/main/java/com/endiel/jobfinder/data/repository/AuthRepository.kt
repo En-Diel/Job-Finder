@@ -45,4 +45,8 @@ class AuthRepository @Inject constructor(
     fun isEmailVerified(): Boolean {
         return firebaseAuth.currentUser?.isEmailVerified == true
     }
+
+    fun getCurrentUserId(): String? {
+        return firebaseAuth.currentUser?.uid
+    }
 }

@@ -4,16 +4,19 @@ import com.endiel.jobfinder.data.local.UserProfileEntity
 import com.endiel.jobfinder.data.local.dao.ProfileDao
 import com.endiel.jobfinder.model.UserProfile
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ProfileRepository @Inject constructor(
-    private val profileDao: ProfileDao
+    private val profileDao: ProfileDao, private val authRepository: AuthRepository
 ) {
 
     fun getProfile(): Flow<UserProfile?> {
+        // ?: Means if the value on the left is not null USE IT otherwise do the thing on the right
+        val userId = authRepository.getCurrentUserId() ?: return flowOf(null)
 
-        return profileDao.getProfile()
+        return profileDao.getProfile(userId)
             .map { entity ->
 
                 entity?.let {
@@ -28,9 +31,10 @@ class ProfileRepository @Inject constructor(
     }
 
     suspend fun saveProfile(profile: UserProfile) {
+        val userId = authRepository.getCurrentUserId() ?: return
 
         val entity = UserProfileEntity(
-            id = 1,
+            userId = userId,
             fullName = profile.fullName,
             email = profile.email,
             phone = profile.phone,
