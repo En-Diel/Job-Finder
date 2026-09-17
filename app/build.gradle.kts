@@ -86,5 +86,7 @@ dependencies {
     // Firebase
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
+    // Firebase firestore
+    implementation("com.google.firebase:firebase-firestore")
 
 }

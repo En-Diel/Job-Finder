@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ProfileRepository @Inject constructor(
-    private val profileDao: ProfileDao, private val authRepository: AuthRepository
+    private val profileDao: ProfileDao,
+    private val authRepository: AuthRepository,
+    private val firestoreProfileRepository: FirestoreProfileRepository
 ) {
 
     fun getProfile(): Flow<UserProfile?> {
@@ -42,5 +44,13 @@ class ProfileRepository @Inject constructor(
         )
 
         profileDao.saveProfile(entity)
+
+        firestoreProfileRepository.saveProfile(
+            userId = userId,
+            fullName = profile.fullName,
+            email = profile.email,
+            phone = profile.phone,
+            location = profile.location
+        )
     }
 }
