@@ -1,5 +1,6 @@
 package com.endiel.jobfinder.data.repository
 
+import com.endiel.jobfinder.model.ApplicationStatus
 import com.endiel.jobfinder.model.JobApplication
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -24,31 +25,28 @@ class FirestoreApplicationRepository @Inject constructor(
             "status" to "SUBMITTED"
         )
 
-        firestore
-            .collection("users")
-            .document(userId)
-            .collection("applications")
-            .document(application.id)
-            .set(applicationData)
-            .await()
+        firestore.collection("users").document(userId).collection("applications")
+            .document(application.id).set(applicationData).await()
     }
 
     suspend fun getApplications(): List<JobApplication> {
 
         val userId = authRepository.getCurrentUserId() ?: return emptyList()
-        val snapshot = firestore
-            .collection("users")
-            .document(userId)
-            .collection("applications")
-            .get()
-            .await()
+        val snapshot =
+            firestore.collection("users").document(userId).collection("applications").get().await()
 
         return snapshot.documents.mapNotNull { document ->
             val jobId = document.getString("jobId") ?: return@mapNotNull null
-            val fullName = document.getString("fullName") ?: return@mapNotNull  null
-            val email = document.getString("email") ?: return@mapNotNull  null
-            val phone = document.getString("phone") ?: return@mapNotNull  null
-            val coverLetter = document.getString("coverLetter") ?: return@mapNotNull  null
+            val fullName = document.getString("fullName") ?: return@mapNotNull null
+            val email = document.getString("email") ?: return@mapNotNull null
+            val phone = document.getString("phone") ?: return@mapNotNull null
+            val coverLetter = document.getString("coverLetter") ?: return@mapNotNull null
+            val statusString = document.getString("status") ?: "SUBMITTED"
+            val status = try {
+                ApplicationStatus.valueOf(statusString)
+            } catch (e: IllegalArgumentException) {
+                ApplicationStatus.SUBMITTED
+            }
 
             JobApplication(
                 id = document.id,
@@ -56,8 +54,16 @@ class FirestoreApplicationRepository @Inject constructor(
                 fullName = fullName,
                 email = email,
                 phone = phone,
-                coverLetter =coverLetter
+                coverLetter = coverLetter,
+                status = status
             )
         }
+    }
+
+    suspend fun updateApplicationStatus(applicationId: String, status: ApplicationStatus) {
+        val userId = authRepository.getCurrentUserId() ?: return
+
+        firestore.collection("users").document(userId).collection("applications")
+            .document(applicationId).update("status", status).await()
     }
 }

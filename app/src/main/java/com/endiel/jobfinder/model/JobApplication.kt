@@ -8,5 +8,6 @@ data class JobApplication (
     val fullName: String,
     val email: String,
     val phone: String,
-    val coverLetter: String
+    val coverLetter: String,
+    val status: ApplicationStatus = ApplicationStatus.SUBMITTED
 )

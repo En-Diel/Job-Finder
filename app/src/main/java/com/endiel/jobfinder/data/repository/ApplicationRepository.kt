@@ -38,6 +38,7 @@ class ApplicationRepository @Inject constructor(
             applicationId = applicationId,
             status = status
         )
+        firestoreApplicationRepository.updateApplicationStatus(applicationId = applicationId, status = status)
     }
     // SYNC APPLICATIONS
     suspend fun syncApplications() {
@@ -51,7 +52,8 @@ class ApplicationRepository @Inject constructor(
                 fullName = application.fullName,
                 email = application.email,
                 phone = application.phone,
-                coverLetter = application.coverLetter
+                coverLetter = application.coverLetter,
+                status = application.status
             )
             jobApplicationDao.insertApplication(entity)
         }
