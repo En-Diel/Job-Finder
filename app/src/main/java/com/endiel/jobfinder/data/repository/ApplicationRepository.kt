@@ -11,7 +11,7 @@ class ApplicationRepository @Inject constructor(
     private val jobApplicationDao: JobApplicationDao,
     private val firestoreApplicationRepository: FirestoreApplicationRepository
 ) {
-
+    // SUBMIT APPLICATION
     suspend fun submitApplication(application: JobApplication) {
         val entity = JobApplicationEntity(
             id = application.id,
@@ -38,5 +38,22 @@ class ApplicationRepository @Inject constructor(
             applicationId = applicationId,
             status = status
         )
+    }
+    // SYNC APPLICATIONS
+    suspend fun syncApplications() {
+
+        val cloudApplications = firestoreApplicationRepository.getApplications()
+
+        cloudApplications.forEach { application ->
+            val entity = JobApplicationEntity(
+                id = application.id,
+                jobId = application.jobId,
+                fullName = application.fullName,
+                email = application.email,
+                phone = application.phone,
+                coverLetter = application.coverLetter
+            )
+            jobApplicationDao.insertApplication(entity)
+        }
     }
 }

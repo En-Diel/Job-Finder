@@ -32,4 +32,32 @@ class FirestoreApplicationRepository @Inject constructor(
             .set(applicationData)
             .await()
     }
+
+    suspend fun getApplications(): List<JobApplication> {
+
+        val userId = authRepository.getCurrentUserId() ?: return emptyList()
+        val snapshot = firestore
+            .collection("users")
+            .document(userId)
+            .collection("applications")
+            .get()
+            .await()
+
+        return snapshot.documents.mapNotNull { document ->
+            val jobId = document.getString("jobId") ?: return@mapNotNull null
+            val fullName = document.getString("fullName") ?: return@mapNotNull  null
+            val email = document.getString("email") ?: return@mapNotNull  null
+            val phone = document.getString("phone") ?: return@mapNotNull  null
+            val coverLetter = document.getString("coverLetter") ?: return@mapNotNull  null
+
+            JobApplication(
+                id = document.id,
+                jobId = jobId,
+                fullName = fullName,
+                email = email,
+                phone = phone,
+                coverLetter =coverLetter
+            )
+        }
+    }
 }

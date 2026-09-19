@@ -19,8 +19,7 @@ import kotlin.collections.emptyList
 class ApplicationsViewModel @Inject constructor(
     private val applicationRepository: ApplicationRepository,
     private val jobsRepository: JobsRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     val applications: StateFlow<List<ApplicationItem>> =
         applicationRepository.getApplications().map { applicationList ->
@@ -35,6 +34,13 @@ class ApplicationsViewModel @Inject constructor(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000), initialValue = emptyList()
             )
+
+    init {
+        viewModelScope.launch {
+            applicationRepository.syncApplications()
+        }
+    }
+
     fun getApplicationById(applicationId: String): ApplicationItem? {
         return applications.value.find {
             it.application.id == applicationId
