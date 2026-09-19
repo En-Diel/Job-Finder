@@ -28,7 +28,7 @@ class ApplicationDetailsViewModel @Inject constructor(
     private val _application = MutableStateFlow<ApplicationItem?>(null)
     val application: StateFlow<ApplicationItem?> = _application.asStateFlow()
 
-    fun loadApplication(applicationId: Int) {
+    fun loadApplication(applicationId: String) {
         viewModelScope.launch {
             applicationRepository.getApplicationById(applicationId).collect { application ->
                 _application.value = application?.let {
@@ -41,7 +41,7 @@ class ApplicationDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateApplicationStatus(applicationId: Int, status: ApplicationStatus) {
+    fun updateApplicationStatus(applicationId: String, status: ApplicationStatus) {
         viewModelScope.launch {
             applicationRepository.updateApplicationStatus(
                 applicationId = applicationId,

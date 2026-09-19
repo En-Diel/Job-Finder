@@ -38,7 +38,7 @@ import com.endiel.jobfinder.ui.screens.applications.ApplicationItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicationDetailsScreen(
-    applicationId: Int,
+    applicationId: String,
     onBackClick: () -> Unit
 ) {
     val viewModel: ApplicationDetailsViewModel = hiltViewModel()

@@ -29,7 +29,7 @@ import com.endiel.jobfinder.data.local.JobApplicationEntity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicationsScreen(
-    onApplicationClick: (Int) -> Unit,
+    onApplicationClick: (String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

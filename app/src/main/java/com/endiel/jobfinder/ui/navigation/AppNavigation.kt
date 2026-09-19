@@ -120,7 +120,7 @@ fun AppNavigation() {
         }
         // APPLICATION DETAILS ROUTE
         composable(Screen.ApplicationDetails.route) { backStackEntry ->
-            val applicationId = backStackEntry.arguments?.getString("applicationId")?.toIntOrNull()
+            val applicationId = backStackEntry.arguments?.getString("applicationId")
 
             if (applicationId != null) {
                 ApplicationDetailsScreen(

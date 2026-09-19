@@ -46,7 +46,8 @@ object DatabaseModule {
                 ) 
                 """.trimIndent()
             )
-            database.execSQL(""" INSERT INTO user_profile_new(
+            database.execSQL(
+                """ INSERT INTO user_profile_new(
                 userId, 
                 fullName, 
                 email, 
@@ -61,7 +62,8 @@ object DatabaseModule {
                 location 
             FROM user_profile 
             WHERE userId != '' 
-            """.trimIndent())
+            """.trimIndent()
+            )
             database.execSQL(
                 """ DROP TABLE user_profile 
                 """.trimIndent()
@@ -69,6 +71,32 @@ object DatabaseModule {
             database.execSQL(
                 """ ALTER TABLE user_profile_new 
                     RENAME TO user_profile 
+                """.trimIndent()
+            )
+        }
+    }
+
+    private val MIGRATION_7_8 = object : Migration(7, 8) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL(
+                """ CREATE TABLE job_applications_new (
+                    id TEXT NOT NULL, 
+                    jobId TEXT NOT NULL, 
+                    fullName TEXT NOT NULL, 
+                    email TEXT NOT NULL, 
+                    phone TEXT NOT NULL, 
+                    coverLetter TEXT NOT NULL, 
+                    status TEXT NOT NULL, 
+                    PRIMARY KEY(id)
+                    ) 
+                """.trimIndent()
+            )
+            database.execSQL(
+                """ DROP TABLE job_applications """.trimIndent()
+            )
+            database.execSQL(
+                """ ALTER TABLE job_applications_new 
+                    RENAME TO job_applications 
                 """.trimIndent()
             )
         }
@@ -82,7 +110,8 @@ object DatabaseModule {
             context, JobFinderDatabase::class.java, "job_finder_database"
         ).addMigrations(
             MIGRATION_5_6,
-            MIGRATION_6_7
+            MIGRATION_6_7,
+            MIGRATION_7_8
         ).build()
     }
 

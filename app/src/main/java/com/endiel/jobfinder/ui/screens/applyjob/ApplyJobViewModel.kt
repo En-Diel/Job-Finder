@@ -62,7 +62,7 @@ class ApplyJobViewModel @Inject constructor(private val repository: ApplicationR
                         fullName = state.fullName,
                         email = state.email,
                         phone = state.phone,
-                        state.coverLetter
+                        coverLetter = state.coverLetter
                     )
                 )
                 _uiState.update {

@@ -35,7 +35,7 @@ class ApplicationsViewModel @Inject constructor(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000), initialValue = emptyList()
             )
-    fun getApplicationById(applicationId: Int): ApplicationItem? {
+    fun getApplicationById(applicationId: String): ApplicationItem? {
         return applications.value.find {
             it.application.id == applicationId
         }

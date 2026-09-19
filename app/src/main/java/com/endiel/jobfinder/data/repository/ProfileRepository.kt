@@ -16,25 +16,6 @@ class ProfileRepository @Inject constructor(
     private val firestoreProfileRepository: FirestoreProfileRepository
 ) {
 
-    /*
-    fun getProfile(): Flow<UserProfile?> {
-        // ?: Means if the value on the left is not null USE IT otherwise do the thing on the right
-        val userId = authRepository.getCurrentUserId() ?: return flowOf(null)
-
-        return profileDao.getProfile(userId)
-            .map { entity ->
-
-                entity?.let {
-                    UserProfile(
-                        fullName = it.fullName,
-                        email = it.email,
-                        phone = it.phone,
-                        location = it.location
-                    )
-                }
-            }
-    }
-     */
     fun getProfile(): Flow<UserProfile?> = flow {
 
         val userId = authRepository.getCurrentUserId()

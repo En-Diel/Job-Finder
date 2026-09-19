@@ -4,15 +4,17 @@ import com.endiel.jobfinder.data.local.JobApplicationEntity
 import com.endiel.jobfinder.data.local.dao.JobApplicationDao
 import com.endiel.jobfinder.model.ApplicationStatus
 import com.endiel.jobfinder.model.JobApplication
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
 
-class ApplicationRepository @Inject constructor(private val jobApplicationDao: JobApplicationDao) {
+class ApplicationRepository @Inject constructor(
+    private val jobApplicationDao: JobApplicationDao,
+    private val firestoreApplicationRepository: FirestoreApplicationRepository
+) {
 
     suspend fun submitApplication(application: JobApplication) {
         val entity = JobApplicationEntity(
+            id = application.id,
             jobId = application.jobId,
             fullName = application.fullName,
             email = application.email,
@@ -20,17 +22,18 @@ class ApplicationRepository @Inject constructor(private val jobApplicationDao: J
             coverLetter = application.coverLetter
         )
         jobApplicationDao.insertApplication(entity)
+        firestoreApplicationRepository.saveApplication(application)
     }
 
     fun getApplications(): Flow<List<JobApplicationEntity>> {
         return jobApplicationDao.getApplications()
     }
 
-    fun getApplicationById(applicationId: Int): Flow<JobApplicationEntity?> {
+    fun getApplicationById(applicationId: String): Flow<JobApplicationEntity?> {
         return jobApplicationDao.getApplicationId(applicationId)
     }
 
-    suspend fun updateApplicationStatus(applicationId: Int, status: ApplicationStatus) {
+    suspend fun updateApplicationStatus(applicationId: String, status: ApplicationStatus) {
         jobApplicationDao.updateStatus(
             applicationId = applicationId,
             status = status

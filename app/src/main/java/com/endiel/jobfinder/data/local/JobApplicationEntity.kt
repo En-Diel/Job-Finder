@@ -6,8 +6,8 @@ import com.endiel.jobfinder.model.ApplicationStatus
 
 @Entity(tableName = "job_applications")
 data class JobApplicationEntity (
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey
+    val id: String,
 
     val jobId: String,
     val fullName: String,
