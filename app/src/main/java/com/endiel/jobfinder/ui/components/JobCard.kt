@@ -93,7 +93,6 @@ fun JobCard(
                         }
                     )
                 }
-                Button( onClick = {} ) { Text("Apply Now") }
             }
         }
     }
