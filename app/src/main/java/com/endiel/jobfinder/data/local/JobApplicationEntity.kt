@@ -9,6 +9,7 @@ data class JobApplicationEntity (
     @PrimaryKey
     val id: String,
 
+    val userId: String,
     val jobId: String,
     val fullName: String,
     val email: String,

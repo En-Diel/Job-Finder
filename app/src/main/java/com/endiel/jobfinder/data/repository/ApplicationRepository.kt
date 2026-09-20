@@ -9,45 +9,55 @@ import javax.inject.Inject
 
 class ApplicationRepository @Inject constructor(
     private val jobApplicationDao: JobApplicationDao,
-    private val firestoreApplicationRepository: FirestoreApplicationRepository
+    private val firestoreApplicationRepository: FirestoreApplicationRepository,
+    private val authRepository: AuthRepository
 ) {
     // SUBMIT APPLICATION
     suspend fun submitApplication(application: JobApplication) {
+
+        val userId = authRepository.getCurrentUserId() ?: return
+
         val entity = JobApplicationEntity(
             id = application.id,
+            userId = userId,
             jobId = application.jobId,
             fullName = application.fullName,
             email = application.email,
             phone = application.phone,
-            coverLetter = application.coverLetter
+            coverLetter = application.coverLetter,
+            status = application.status
         )
         jobApplicationDao.insertApplication(entity)
         firestoreApplicationRepository.saveApplication(application)
     }
 
-    fun getApplications(): Flow<List<JobApplicationEntity>> {
-        return jobApplicationDao.getApplications()
+    fun getApplications(userId: String): Flow<List<JobApplicationEntity>> {
+        return jobApplicationDao.getApplications(userId)
     }
 
-    fun getApplicationById(applicationId: String): Flow<JobApplicationEntity?> {
-        return jobApplicationDao.getApplicationId(applicationId)
+    fun getApplicationById(applicationId: String, userId: String): Flow<JobApplicationEntity?> {
+        return jobApplicationDao.getApplicationId(applicationId = applicationId, userId = userId)
     }
 
     suspend fun updateApplicationStatus(applicationId: String, status: ApplicationStatus) {
         jobApplicationDao.updateStatus(
-            applicationId = applicationId,
-            status = status
+            applicationId = applicationId, status = status
         )
-        firestoreApplicationRepository.updateApplicationStatus(applicationId = applicationId, status = status)
+        firestoreApplicationRepository.updateApplicationStatus(
+            applicationId = applicationId, status = status
+        )
     }
+
     // SYNC APPLICATIONS
     suspend fun syncApplications() {
 
+        val userId = authRepository.getCurrentUserId() ?: return
         val cloudApplications = firestoreApplicationRepository.getApplications()
 
         cloudApplications.forEach { application ->
             val entity = JobApplicationEntity(
                 id = application.id,
+                userId = userId,
                 jobId = application.jobId,
                 fullName = application.fullName,
                 email = application.email,

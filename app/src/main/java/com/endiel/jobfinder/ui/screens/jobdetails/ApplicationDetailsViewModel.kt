@@ -4,6 +4,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.repository.ApplicationRepository
+import com.endiel.jobfinder.data.repository.AuthRepository
 import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.model.ApplicationStatus
 import com.endiel.jobfinder.ui.screens.applications.ApplicationItem
@@ -22,15 +23,18 @@ import javax.inject.Inject
 @HiltViewModel
 class ApplicationDetailsViewModel @Inject constructor(
     private val applicationRepository: ApplicationRepository,
-    private val jobsRepository: JobsRepository
+    private val jobsRepository: JobsRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _application = MutableStateFlow<ApplicationItem?>(null)
     val application: StateFlow<ApplicationItem?> = _application.asStateFlow()
 
     fun loadApplication(applicationId: String) {
+        val userId = authRepository.getCurrentUserId() ?: return
+
         viewModelScope.launch {
-            applicationRepository.getApplicationById(applicationId).collect { application ->
+            applicationRepository.getApplicationById(applicationId, userId).collect { application ->
                 _application.value = application?.let {
                     ApplicationItem(
                         application = it,

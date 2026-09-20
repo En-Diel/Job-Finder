@@ -102,6 +102,37 @@ object DatabaseModule {
         }
     }
 
+    private val MIGRATION_8_9 = object : Migration(8, 9) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL(
+                """ 
+                    CREATE TABLE job_applications_new (
+                    id TEXT NOT NULL,
+                    userId TEXT NOT NULL,
+                    jobId TEXT NOT NULL,
+                    fullName TEXT NOT NULL,
+                    email TEXT NOT NULL,
+                    phone TEXT NOT NULL,
+                    coverLetter TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    PRIMARY KEY(id)
+                    )
+                """.trimIndent()
+            )
+            database.execSQL(
+                """
+                    DROP TABLE job_applications
+                """.trimIndent()
+            )
+            database.execSQL(
+                """
+                    ALTER TABLE job_applications_new 
+                    RENAME TO job_applications
+                """.trimIndent()
+            )
+        }
+    }
+
     @Provides // Tells hilt how to create a specific instance
     @Singleton // Ensures only one instance of DB is created and shared
     // Hilt automatically provides the app context so you can initialize Room
@@ -111,7 +142,8 @@ object DatabaseModule {
         ).addMigrations(
             MIGRATION_5_6,
             MIGRATION_6_7,
-            MIGRATION_7_8
+            MIGRATION_7_8,
+            MIGRATION_8_9
         ).build()
     }
 

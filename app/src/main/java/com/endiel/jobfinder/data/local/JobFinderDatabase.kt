@@ -14,7 +14,7 @@ import com.endiel.jobfinder.data.local.dao.SavedJobDao
         UserProfileEntity::class
     ],
     // We changed the version coz we changed the database schema by adding a new table
-    version = 8, exportSchema = false
+    version = 9, exportSchema = false
 )
 @TypeConverters(Converters::class) // Registering the converter
 abstract class JobFinderDatabase: RoomDatabase() {

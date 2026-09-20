@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.local.JobApplicationEntity
 import com.endiel.jobfinder.data.repository.ApplicationRepository
+import com.endiel.jobfinder.data.repository.AuthRepository
 import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.model.ApplicationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,11 +19,12 @@ import kotlin.collections.emptyList
 @HiltViewModel
 class ApplicationsViewModel @Inject constructor(
     private val applicationRepository: ApplicationRepository,
-    private val jobsRepository: JobsRepository
+    private val jobsRepository: JobsRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     val applications: StateFlow<List<ApplicationItem>> =
-        applicationRepository.getApplications().map { applicationList ->
+        applicationRepository.getApplications(authRepository.getCurrentUserId() ?: "").map { applicationList ->
             applicationList.map { application ->
                 ApplicationItem(
                     application = application,

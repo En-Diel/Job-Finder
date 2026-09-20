@@ -14,11 +14,11 @@ interface JobApplicationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertApplication(applicationEntity: JobApplicationEntity)
 
-    @Query("SELECT * FROM job_applications")
-    fun getApplications(): Flow<List<JobApplicationEntity>>
+    @Query("SELECT * FROM job_applications WHERE userId = :userId")
+    fun getApplications(userId: String): Flow<List<JobApplicationEntity>>
 
-    @Query("SELECT * FROM job_applications WHERE id = :applicationId")
-    fun getApplicationId(applicationId: String): Flow<JobApplicationEntity?>
+    @Query("SELECT * FROM job_applications WHERE id = :applicationId AND userId = :userId")
+    fun getApplicationId(applicationId: String, userId: String): Flow<JobApplicationEntity?>
 
     @Query("UPDATE job_applications SET status = :status WHERE id = :applicationId")
     suspend fun updateStatus(applicationId: String, status: ApplicationStatus)
