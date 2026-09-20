@@ -40,8 +40,11 @@ class ApplicationRepository @Inject constructor(
     }
 
     suspend fun updateApplicationStatus(applicationId: String, status: ApplicationStatus) {
+
+        val userId = authRepository.getCurrentUserId() ?: return
+
         jobApplicationDao.updateStatus(
-            applicationId = applicationId, status = status
+            applicationId = applicationId, userId = userId, status = status
         )
         firestoreApplicationRepository.updateApplicationStatus(
             applicationId = applicationId, status = status

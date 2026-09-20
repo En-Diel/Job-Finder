@@ -20,6 +20,6 @@ interface JobApplicationDao {
     @Query("SELECT * FROM job_applications WHERE id = :applicationId AND userId = :userId")
     fun getApplicationId(applicationId: String, userId: String): Flow<JobApplicationEntity?>
 
-    @Query("UPDATE job_applications SET status = :status WHERE id = :applicationId")
-    suspend fun updateStatus(applicationId: String, status: ApplicationStatus)
+    @Query("UPDATE job_applications SET status = :status WHERE id = :applicationId AND userId = :userId")
+    suspend fun updateStatus(applicationId: String, userId: String, status: ApplicationStatus)
 }
