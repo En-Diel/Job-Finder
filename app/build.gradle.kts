@@ -25,6 +25,17 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
+        // Adzuna api credentials
+        buildConfigField(
+            "String",
+            "ADZUNA_APP_ID",
+            "\"04b9d927\""
+        )
+        buildConfigField(
+            "String",
+            "ADZUNA_APP_KEY",
+            "\"e3e8c3a8d2ef10a8f41f8ff2dd29ce8a\""
+        )
     }
 
     buildTypes {
@@ -40,6 +51,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -87,4 +99,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 }
