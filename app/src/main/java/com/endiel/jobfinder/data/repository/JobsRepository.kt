@@ -1,15 +1,21 @@
 package com.endiel.jobfinder.data.repository
 
+import com.endiel.jobfinder.data.remote.JobsRemoteDataSource
+import com.endiel.jobfinder.data.remote.mapper.toJob
 import com.endiel.jobfinder.model.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class JobsRepository {
+class JobsRepository @Inject constructor(private val remoteDataSource: JobsRemoteDataSource) {
 
     fun getJobs(): Flow<List<Job>> = flow {
-        // By using emit, we assume the data come from API
-        emit(sampleJobs)
+
+        val jobs = remoteDataSource.getJobs().map { it.toJob() }
+
+        emit(jobs)
     }
+
     fun getJobById(jobId: String): Job? {
         return sampleJobs.find { it.id == jobId }
     }

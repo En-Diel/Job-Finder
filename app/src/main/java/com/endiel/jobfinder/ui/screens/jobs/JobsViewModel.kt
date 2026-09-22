@@ -108,7 +108,7 @@ class JobsViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = JobsUiState(
                     isLoading = false,
-                    error = "Failed to load jobs"
+                    error = "Failed to load jobs: ${e.message}"
                 )
             }
         }
