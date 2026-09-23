@@ -2,6 +2,7 @@ package com.endiel.jobfinder.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,6 +15,7 @@ import com.endiel.jobfinder.ui.screens.home.HomeScreen
 import com.endiel.jobfinder.ui.screens.jobdetails.ApplicationDetailsScreen
 import com.endiel.jobfinder.ui.screens.jobdetails.JobDetailsScreen
 import com.endiel.jobfinder.ui.screens.jobs.JobsScreen
+import com.endiel.jobfinder.ui.screens.jobs.JobsViewModel
 import com.endiel.jobfinder.ui.screens.login.LoginScreen
 import com.endiel.jobfinder.ui.screens.profile.ProfileScreen
 import com.endiel.jobfinder.ui.screens.register.RegisterScreen
@@ -21,11 +23,13 @@ import com.endiel.jobfinder.ui.screens.savedjobs.SavedJobsScreen
 //import com.endiel.jobfinder.ui.screens.search.SearchScreen
 import com.endiel.jobfinder.ui.screens.settings.SettingsScreen
 import com.endiel.jobfinder.ui.screens.splash.SplashScreen
+import androidx.compose.runtime.collectAsState
 
 @Composable
 fun AppNavigation() {
 
     val navController = rememberNavController()
+    val jobsViewModel: JobsViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         // SPLASH ROUTE
@@ -69,7 +73,11 @@ fun AppNavigation() {
         }
         // JOBS ROUTE
         composable(Screen.Jobs.route) {
-            JobsScreen(onBackClick = { navController.popBackStack() }, navController)
+            JobsScreen(
+                onBackClick = { navController.popBackStack() },
+                navController = navController,
+                viewModel = jobsViewModel
+            )
         }
         // SETTINGS ROUTE
         composable(Screen.Settings.route) {
@@ -82,7 +90,7 @@ fun AppNavigation() {
 
             val jobId = backStackEntry.arguments?.getString("jobId")
             //Text(text = "JOB DETAILS ID: $jobId") // Debugging the route
-            val job = sampleJobs.find { it.id == jobId }
+            val job = jobsViewModel.uiState.value.jobs.find { it.id == jobId }
 
             if (job !== null) {
                 JobDetailsScreen(

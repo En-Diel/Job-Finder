@@ -30,6 +30,7 @@ class JobDetailsViewModel @Inject constructor(private val repository: SavedJobsR
             }
         }
     }
+
     fun toggleSaveJob(job: com.endiel.jobfinder.model.Job) {
         viewModelScope.launch {
             if (_isSaved.value) {

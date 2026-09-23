@@ -3,6 +3,7 @@ package com.endiel.jobfinder.data.repository
 import com.endiel.jobfinder.data.remote.JobsRemoteDataSource
 import com.endiel.jobfinder.data.remote.mapper.toJob
 import com.endiel.jobfinder.model.Job
+import com.endiel.jobfinder.ui.navigation.Screen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

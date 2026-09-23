@@ -53,9 +53,9 @@ import com.endiel.jobfinder.ui.components.JobSearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JobsScreen(onBackClick: () -> Unit, navController: NavController) {
+fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel: JobsViewModel) {
 
-    val viewModel: JobsViewModel = hiltViewModel()
+    //val viewModel: JobsViewModel = hiltViewModel()
 
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
