@@ -10,10 +10,8 @@ import javax.inject.Inject
 
 class JobsRepository @Inject constructor(private val remoteDataSource: JobsRemoteDataSource) {
 
-    fun getJobs(): Flow<List<Job>> = flow {
-
-        val jobs = remoteDataSource.getJobs().map { it.toJob() }
-
+    fun getJobs(query: String? = null): Flow<List<Job>> = flow {
+        val jobs = remoteDataSource.getJobs(query).map { it.toJob() }
         emit(jobs)
     }
 

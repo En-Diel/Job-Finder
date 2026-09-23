@@ -93,13 +93,13 @@ class JobsViewModel @Inject constructor(
     }
 
     // Load jobs
-    fun loadJobs() {
+    fun loadJobs(query: String? = null) {
         viewModelScope.launch {
             _uiState.value = JobsUiState(
                 isLoading = true
             )
             try {
-                repository.getJobs().collect { jobs ->
+                repository.getJobs(query).collect { jobs ->
                     _uiState.value = JobsUiState(
                         jobs = jobs,
                         isLoading = false
@@ -117,6 +117,11 @@ class JobsViewModel @Inject constructor(
     // Search
     fun onSearchQueryChange(query: String) {
         _searchQuery.value = query
+        if(query.isBlank()) {
+            loadJobs()
+        } else {
+            loadJobs(query)
+        }
     }
 
     // Category selection
