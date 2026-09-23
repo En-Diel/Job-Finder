@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.data.repository.SavedJobsRepository
-import com.endiel.jobfinder.data.repository.sampleJobs
 import com.endiel.jobfinder.model.Job
-import com.endiel.jobfinder.ui.screens.savedjobs.SavedJobsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class JobsViewModel @Inject constructor(
@@ -40,6 +39,8 @@ class JobsViewModel @Inject constructor(
     // Category state
     private val _selectedCategory = MutableStateFlow("All")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
+
+    private var searchJob: kotlinx.coroutines.Job? = null
 
     // Categories
     val categories = listOf(
@@ -116,11 +117,17 @@ class JobsViewModel @Inject constructor(
 
     // Search
     fun onSearchQueryChange(query: String) {
+
         _searchQuery.value = query
-        if(query.isBlank()) {
-            loadJobs()
-        } else {
-            loadJobs(query)
+        searchJob?.cancel()
+        viewModelScope.launch {
+            // Make the search delay a bit until the user finishes typing and then perform search
+            kotlinx.coroutines.delay(500.milliseconds)
+            if(query.isBlank()) {
+                loadJobs()
+            } else {
+                loadJobs(query)
+            }
         }
     }
 
