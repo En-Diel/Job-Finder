@@ -2,6 +2,7 @@ package com.endiel.jobfinder.ui.screens.jobs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.data.repository.SavedJobsRepository
 import com.endiel.jobfinder.model.Job
@@ -39,6 +40,10 @@ class JobsViewModel @Inject constructor(
     // Category state
     private val _selectedCategory = MutableStateFlow("All")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
+
+    // Location state
+    private val _searchLocation = MutableStateFlow("")
+    val searchLocation: StateFlow<String> = _searchLocation.asStateFlow()
 
     private var searchJob: kotlinx.coroutines.Job? = null
 
@@ -94,13 +99,13 @@ class JobsViewModel @Inject constructor(
     }
 
     // Load jobs
-    fun loadJobs(query: String? = null) {
+    fun loadJobs(query: String? = null, location: String? = null) {
         viewModelScope.launch {
             _uiState.value = JobsUiState(
                 isLoading = true
             )
             try {
-                repository.getJobs(query).collect { jobs ->
+                repository.getJobs(query, location).collect { jobs ->
                     _uiState.value = JobsUiState(
                         jobs = jobs,
                         isLoading = false
@@ -123,11 +128,16 @@ class JobsViewModel @Inject constructor(
         viewModelScope.launch {
             // Make the search delay a bit until the user finishes typing and then perform search
             kotlinx.coroutines.delay(500.milliseconds)
+            val location =  _searchLocation.value
             if(query.isBlank()) {
-                loadJobs()
+                loadJobs(location)
             } else {
-                loadJobs(query)
+                loadJobs(query, location = location)
             }
+        }
+
+        fun onSearchLocationChange(location: String) {
+            _searchLocation.value = location
         }
     }
 

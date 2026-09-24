@@ -55,10 +55,9 @@ import com.endiel.jobfinder.ui.components.JobSearchBar
 @Composable
 fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel: JobsViewModel) {
 
-    //val viewModel: JobsViewModel = hiltViewModel()
-
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+    val searchLocation by viewModel.searchLocation.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val filteredJobs by viewModel.filteredJobs.collectAsState()
     val savedJobs by viewModel.savedJobs.collectAsState()
