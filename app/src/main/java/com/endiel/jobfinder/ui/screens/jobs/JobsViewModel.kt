@@ -3,10 +3,12 @@ package com.endiel.jobfinder.ui.screens.jobs
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.util.query
 import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.data.repository.SavedJobsRepository
 import com.endiel.jobfinder.model.Job
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +23,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class JobsViewModel @Inject constructor(
     private val repository: JobsRepository,
     private val savedJobsRepository: SavedJobsRepository
-): ViewModel() {
+) : ViewModel() {
 
     // Saved job state
     val savedJobs: StateFlow<List<Job>> = savedJobsRepository.getSavedJobs().stateIn(
@@ -29,6 +31,7 @@ class JobsViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = emptyList()
     )
+
     // Ui State
     private val _uiState = MutableStateFlow(JobsUiState())
     val uiState: StateFlow<JobsUiState> = _uiState.asStateFlow()
@@ -46,6 +49,7 @@ class JobsViewModel @Inject constructor(
     val searchLocation: StateFlow<String> = _searchLocation.asStateFlow()
 
     private var searchJob: kotlinx.coroutines.Job? = null
+    private var currentPage = 1
 
     // Categories
     val categories = listOf(
@@ -99,22 +103,40 @@ class JobsViewModel @Inject constructor(
     }
 
     // Load jobs
-    fun loadJobs(query: String? = null, location: String? = null) {
+    fun loadJobs(
+        query: String? = null,
+        location: String? = null,
+        page: Int = 1,
+        append: Boolean = false
+    ) {
         viewModelScope.launch {
-            _uiState.value = JobsUiState(
-                isLoading = true
+            _uiState.value = _uiState.value.copy(
+                isLoading = !append,
+                isLoadingMore = append,
+                error = null
             )
             try {
-                repository.getJobs(query, location).collect { jobs ->
-                    _uiState.value = JobsUiState(
-                        jobs = jobs,
-                        isLoading = false
-                    )
-                }
+                repository.getJobs(query = query, location = location, page = page)
+                    .collect { jobs ->
+                        val updatedJobs = if (append) {
+                            // Appending the new page
+                            _uiState.value.jobs + jobs
+                        } else {
+                            jobs
+                        }
+                        // Updating the UI state
+                        _uiState.value = JobsUiState(
+                            jobs = updatedJobs,
+                            isLoading = false,
+                            isLoadingMore = false,
+                            error = null
+                        )
+                    }
             } catch (e: Exception) {
-                _uiState.value = JobsUiState(
+                _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = "Failed to load jobs."
+                    isLoadingMore = false,
+                    error = "Failed to load jobs: ${e.message}"
                 )
             }
         }
@@ -125,14 +147,17 @@ class JobsViewModel @Inject constructor(
 
         _searchQuery.value = query
         searchJob?.cancel()
-        viewModelScope.launch {
+
+        searchJob = viewModelScope.launch {
             // Make the search delay a bit until the user finishes typing and then perform search
             kotlinx.coroutines.delay(500.milliseconds)
-            val location =  _searchLocation.value
-            if(query.isBlank()) {
-                loadJobs(location)
+            currentPage = 1
+            val location = _searchLocation.value.ifBlank { null }
+
+            if (query.isBlank()) {
+                loadJobs(location, page = 1)
             } else {
-                loadJobs(query, location = location)
+                loadJobs(query, location = location, page = 1)
             }
         }
 
@@ -158,5 +183,28 @@ class JobsViewModel @Inject constructor(
                 savedJobsRepository.saveJob(job)
             }
         }
+    }
+    // NEXT PAGE
+    fun loadNextPage() {
+
+        if (_uiState.value.isLoading) return
+        currentPage++
+        loadJobs(
+            query = _searchQuery.value.ifBlank { null },
+            location = _searchLocation.value.ifBlank { null },
+            page = currentPage,
+            append = true
+        )
+    }
+    // REFRESH JOBS
+    fun refreshJobs() {
+
+        currentPage = 1
+        loadJobs(
+            query = _searchQuery.value.ifBlank { null },
+            location = _searchLocation.value.ifBlank { null },
+            page = 1,
+            append = false
+        )
     }
 }

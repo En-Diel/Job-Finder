@@ -5,5 +5,6 @@ import com.endiel.jobfinder.model.Job
 data class JobsUiState (
     val jobs: List<Job> = emptyList(),
     val isLoading: Boolean = false,
+    val isLoadingMore: Boolean = false,
     val error: String? = null
 )

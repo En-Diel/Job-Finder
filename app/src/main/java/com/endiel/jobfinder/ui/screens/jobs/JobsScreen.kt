@@ -88,7 +88,7 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
             )
             // CATEGORY FILTER CHIPS
             LazyRow(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, ),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(viewModel.categories) { category ->
@@ -111,18 +111,23 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                     searchQuery,
                     onQueryChange = { query ->
                         viewModel.onSearchQueryChange(query)
-                                    },
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                    },
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
-                Text(text = "${filteredJobs.size} jobs found", modifier = Modifier.padding(start = 16.dp))
+                Text(
+                    text = "${filteredJobs.size} jobs found",
+                    modifier = Modifier.padding(start = 16.dp)
+                )
                 // SEARCH RESULTS
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
-                        modifier =Modifier.align(Alignment.CenterHorizontally)
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 } else if (uiState.error != null) {
                     Column(
-                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -144,8 +149,10 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                 } else {
                     PullToRefreshBox(
                         uiState.isLoading,
-                        onRefresh = { viewModel.loadJobs() },
-                        modifier = Modifier.fillMaxWidth().weight(1f)
+                        onRefresh = { viewModel.refreshJobs() },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
                     ) {
                         LazyColumn(
                             modifier = Modifier.fillMaxWidth(),
@@ -162,6 +169,24 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                                         navController.navigate("job_details/${job.id}")
                                     }
                                 )
+                            }
+
+                            item {
+                                Button(
+                                    onClick = { viewModel.loadNextPage() },
+                                    enabled = !uiState.isLoadingMore,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                ) {
+                                    if (uiState.isLoadingMore) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(20.dp), strokeWidth = 2.dp
+                                        )
+                                    } else {
+                                        Text("Load More")
+                                    }
+                                }
                             }
                         }
                     }

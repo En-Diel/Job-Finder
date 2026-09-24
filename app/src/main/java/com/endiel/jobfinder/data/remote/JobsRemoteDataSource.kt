@@ -5,11 +5,11 @@ import com.endiel.jobfinder.data.remote.dto.JobDto
 import jakarta.inject.Inject
 
 class JobsRemoteDataSource @Inject constructor(private val api: JobApiService) {
-    suspend fun getJobs(query: String? = null, location: String? = null): List<JobDto> {
+    suspend fun getJobs(query: String? = null, location: String? = null, page: Int = 1): List<JobDto> {
 
         val response = api.getJobs(
             country = "gb",
-            page = 1,
+            page = page,
             appId = BuildConfig.ADZUNA_APP_ID,
             appKey = BuildConfig.ADZUNA_APP_KEY,
             resultPerPage = 20,
