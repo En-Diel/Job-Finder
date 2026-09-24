@@ -4,6 +4,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.endiel.jobfinder.data.repository.ApplicationRepository
+import com.endiel.jobfinder.model.Job
 import com.endiel.jobfinder.model.JobApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +39,7 @@ class ApplyJobViewModel @Inject constructor(private val repository: ApplicationR
         _uiState.update { it.copy(coverLetter = value) }
     }
 
-    fun submitApplication(jobId: String) {
+    fun submitApplication(job: Job) {
         val state = _uiState.value
         if (state.fullName.isBlank() ||
             state.email.isBlank() ||
@@ -58,7 +59,10 @@ class ApplyJobViewModel @Inject constructor(private val repository: ApplicationR
             try {
                 repository.submitApplication(
                     JobApplication(
-                        jobId = jobId,
+                        jobId = job.id,
+                        jobTitle = job.jobTitle,
+                        companyName = job.companyName,
+                        location = job.location,
                         fullName = state.fullName,
                         email = state.email,
                         phone = state.phone,

@@ -16,8 +16,12 @@ class FirestoreApplicationRepository @Inject constructor(
     suspend fun saveApplication(application: JobApplication) {
 
         val userId = authRepository.getCurrentUserId() ?: return
+
         val applicationData = mapOf(
             "jobId" to application.jobId,
+            "jobTitle" to application.jobTitle,
+            "companyName" to application.companyName,
+            "location" to application.location,
             "fullName" to application.fullName,
             "email" to application.email,
             "phone" to application.phone,
@@ -37,6 +41,9 @@ class FirestoreApplicationRepository @Inject constructor(
 
         return snapshot.documents.mapNotNull { document ->
             val jobId = document.getString("jobId") ?: return@mapNotNull null
+            val jobTitle = document.getString("jobTitle") ?: return@mapNotNull null
+            val companyName = document.getString("companyName") ?: return@mapNotNull null
+            val location = document.getString("location") ?: return@mapNotNull null
             val fullName = document.getString("fullName") ?: return@mapNotNull null
             val email = document.getString("email") ?: return@mapNotNull null
             val phone = document.getString("phone") ?: return@mapNotNull null
@@ -51,6 +58,9 @@ class FirestoreApplicationRepository @Inject constructor(
             JobApplication(
                 id = document.id,
                 jobId = jobId,
+                jobTitle = jobTitle,
+                companyName = companyName,
+                location = location,
                 fullName = fullName,
                 email = email,
                 phone = phone,

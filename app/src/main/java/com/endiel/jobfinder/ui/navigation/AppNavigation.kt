@@ -1,5 +1,10 @@
 package com.endiel.jobfinder.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,6 +29,8 @@ import com.endiel.jobfinder.ui.screens.savedjobs.SavedJobsScreen
 import com.endiel.jobfinder.ui.screens.settings.SettingsScreen
 import com.endiel.jobfinder.ui.screens.splash.SplashScreen
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 
 @Composable
 fun AppNavigation() {
@@ -93,38 +100,47 @@ fun AppNavigation() {
             val job = jobsViewModel.uiState.value.jobs.find { it.id == jobId }
 
             if (job !== null) {
-                JobDetailsScreen(
-                    job = job,
-                    onBackClick = {
-                        navController.popBackStack()
-                    },
-                    onApplyClick = {
-                        navController.navigate(
-                            "apply_job/${job.id}"
-                        )
+                JobDetailsScreen(job = job, onBackClick = {
+                    navController.popBackStack()
+                }, onApplyClick = {
+                    navController.navigate(
+                        "apply_job/${job.id}"
+                    )
+                })
+            } else {
+                androidx.compose.foundation.layout.Box(
+                    modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    androidx.compose.foundation.layout.Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
+                        Text("Job not found")
+                        Button(onClick = { navController.popBackStack() }) { Text("Go back") }
                     }
-                )
+                }
             }
         }
         // APPLY JOB ROUTE
         composable(Screen.ApplyJob.route) { backStackEntry ->
             val jobId = backStackEntry.arguments?.getString("jobId")
-            ApplyJobScreen(
-                onBackClick = { navController.popBackStack() },
-                jobId = jobId,
-                onSubmitSuccess = {
-                    navController.navigate(
-                        Screen.Applications.route
-                    ) { popUpTo(Screen.ApplyJob.route) { inclusive = true } }
-                })
+            val job = jobsViewModel.uiState.value.jobs.find {
+                it.id == jobId
+            }
+            if (job != null) {
+                ApplyJobScreen(
+                    job = job,
+                    onBackClick = { navController.popBackStack() },
+                    onSubmitSuccess = {
+                        navController.navigate(
+                            Screen.Applications.route
+                        ) { popUpTo(Screen.ApplyJob.route) { inclusive = true } }
+                    })
+            }
         }
         // APPLICATIONS ROUTE
         composable(Screen.Applications.route) {
-            ApplicationsScreen(
-                onApplicationClick = { applicationId ->
-                    navController.navigate("application_details/$applicationId")
-                },
-                onBackClick = { navController.popBackStack() })
+            ApplicationsScreen(onApplicationClick = { applicationId ->
+                navController.navigate("application_details/$applicationId")
+            }, onBackClick = { navController.popBackStack() })
         }
         // APPLICATION DETAILS ROUTE
         composable(Screen.ApplicationDetails.route) { backStackEntry ->
@@ -132,11 +148,9 @@ fun AppNavigation() {
 
             if (applicationId != null) {
                 ApplicationDetailsScreen(
-                    applicationId = applicationId,
-                    onBackClick = {
+                    applicationId = applicationId, onBackClick = {
                         navController.popBackStack()
-                    }
-                )
+                    })
             }
         }
     }

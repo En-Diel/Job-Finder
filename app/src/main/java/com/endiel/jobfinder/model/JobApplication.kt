@@ -5,6 +5,9 @@ import java.util.UUID
 data class JobApplication (
     val id: String = UUID.randomUUID().toString(),
     val jobId: String,
+    val jobTitle: String,
+    val companyName: String,
+    val location: String,
     val fullName: String,
     val email: String,
     val phone: String,

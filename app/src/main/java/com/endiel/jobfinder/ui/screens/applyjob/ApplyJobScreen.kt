@@ -33,13 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.endiel.jobfinder.model.Job
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplyJobScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    jobId: String?,
+    job: Job,
     onSubmitSuccess: () -> Unit,
     viewModel: ApplyJobViewModel = hiltViewModel()
 ) {
@@ -81,7 +82,7 @@ fun ApplyJobScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Job ID: $jobId"
+                text = "Job: ${job.jobTitle}"
             )
             OutlinedTextField(
                 value = uiState.fullName,
@@ -121,9 +122,7 @@ fun ApplyJobScreen(
             // SUBMIT JOB BUTTON
             Button(
                 onClick = {
-                    if (jobId != null) {
-                        viewModel.submitApplication(jobId)
-                    }
+                    viewModel.submitApplication(job)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !uiState.isSubmitting

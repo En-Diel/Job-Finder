@@ -7,6 +7,7 @@ import com.endiel.jobfinder.data.repository.ApplicationRepository
 import com.endiel.jobfinder.data.repository.AuthRepository
 import com.endiel.jobfinder.data.repository.JobsRepository
 import com.endiel.jobfinder.model.ApplicationStatus
+import com.endiel.jobfinder.model.Job
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,19 +20,32 @@ import kotlin.collections.emptyList
 @HiltViewModel
 class ApplicationsViewModel @Inject constructor(
     private val applicationRepository: ApplicationRepository,
-    private val jobsRepository: JobsRepository,
+    //private val jobsRepository: JobsRepository,
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
     val applications: StateFlow<List<ApplicationItem>> =
-        applicationRepository.getApplications(authRepository.getCurrentUserId() ?: "").map { applicationList ->
-            applicationList.map { application ->
-                ApplicationItem(
-                    application = application,
-                    job = jobsRepository.getJobById(application.jobId)
-                )
+        applicationRepository.getApplications(authRepository.getCurrentUserId() ?: "")
+            .map { applicationList ->
+                applicationList.map { application ->
+                    ApplicationItem(
+                        application = application,
+                        job = Job(
+                            id = application.jobId,
+                            companyName = application.companyName.ifBlank { "Unknown Company" },
+                            jobTitle = application.jobTitle.ifBlank { "Unknown Job" },
+                            location = application.location.ifBlank { "Unknown Location" },
+                            salary = "Salary not specified",
+                            category = "Other",
+                            description = "",
+                            jobType = "Unknown",
+                            jobPosition = "Unknown",
+                            requirements = emptyList(),
+                            responsibilities = emptyList()
+                        )
+                    )
+                }
             }
-        }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000), initialValue = emptyList()
@@ -40,12 +54,6 @@ class ApplicationsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             applicationRepository.syncApplications()
-        }
-    }
-
-    fun getApplicationById(applicationId: String): ApplicationItem? {
-        return applications.value.find {
-            it.application.id == applicationId
         }
     }
 }
