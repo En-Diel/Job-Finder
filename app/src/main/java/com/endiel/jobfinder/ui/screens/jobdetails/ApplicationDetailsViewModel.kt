@@ -23,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ApplicationDetailsViewModel @Inject constructor(
     private val applicationRepository: ApplicationRepository,
-    private val jobsRepository: JobsRepository,
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
@@ -38,7 +37,19 @@ class ApplicationDetailsViewModel @Inject constructor(
                 _application.value = application?.let {
                     ApplicationItem(
                         application = it,
-                        job = jobsRepository.getJobById(it.jobId)
+                        job = com.endiel.jobfinder.model.Job(
+                            id = it.jobId,
+                            companyName = it.companyName.ifBlank { "Unknown Company" },
+                            jobTitle = it.jobTitle.ifBlank { "Unknown Job" },
+                            location = it.location.ifBlank { "Unknown Location" },
+                            salary = "Salary not specified",
+                            category = "Other",
+                            description = "",
+                            jobType = "Unknown",
+                            jobPosition = "Unknown",
+                            requirements = emptyList(),
+                            responsibilities = emptyList()
+                        )
                     )
                 }
             }

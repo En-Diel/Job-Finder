@@ -14,8 +14,4 @@ class JobsRepository @Inject constructor(private val remoteDataSource: JobsRemot
         val jobs = remoteDataSource.getJobs(query, location, page).map { it.toJob() }
         emit(jobs)
     }
-
-    fun getJobById(jobId: String): Job? {
-        return sampleJobs.find { it.id == jobId }
-    }
 }
