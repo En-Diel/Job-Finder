@@ -33,19 +33,19 @@ fun SplashScreen(navController: NavController, viewModel: AuthViewModel = hiltVi
 
             if (isLoggedIn && isEmailVerified) {
                 navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Splash.route) {
+                    popUpTo(Screen.Login.route) {
                         inclusive = true
                     }
                 }
             } else {
                 navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Splash.route) {
+                    popUpTo(Screen.Login.route) {
                         inclusive = true
                     }
                 }
             }
         }
-        Text("Splash Screen")
+        //Text("Splash Screen")
         Button(
             onClick = { navController.navigate(Screen.Login.route) }
         ) {

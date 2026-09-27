@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.endiel.jobfinder.ui.navigation.AppNavigation
 import com.endiel.jobfinder.ui.theme.JobFinderTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        val startTime = System.currentTimeMillis()
+        splashScreen.setKeepOnScreenCondition {
+            System.currentTimeMillis() - startTime < 5000
+        }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

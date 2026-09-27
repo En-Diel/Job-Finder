@@ -38,11 +38,11 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val jobsViewModel: JobsViewModel = hiltViewModel()
 
-    NavHost(navController = navController, startDestination = Screen.Splash.route) {
+    NavHost(navController = navController, startDestination = Screen.Login.route) {
         // SPLASH ROUTE
-        composable(Screen.Splash.route) {
-            SplashScreen(navController)
-        }
+//        composable(Screen.Splash.route) {
+//            SplashScreen(navController)
+//        }
         // LOGIN ROUTE
         composable(Screen.Login.route) {
             LoginScreen(navController)

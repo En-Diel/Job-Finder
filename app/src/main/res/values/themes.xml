@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.JobFinder" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Normal application theme -->
+    <style name="Theme.JobFinder" parent="android:Theme.Material.Light.NoActionBar">
+
+    </style>
+    <!-- Android system splash theme -->
+    <style name="Theme.JobFinder.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_image</item>
+        <item name="postSplashScreenTheme">@style/Theme.JobFinder</item>
+    </style>
+
+
 </resources>
