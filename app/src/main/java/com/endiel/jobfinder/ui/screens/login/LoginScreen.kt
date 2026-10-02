@@ -42,7 +42,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

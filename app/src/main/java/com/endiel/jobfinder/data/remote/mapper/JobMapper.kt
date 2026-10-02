@@ -7,11 +7,11 @@ fun JobDto.toJob(): Job {
 
     val salary = when {
         salary_min != null && salary_max != null ->
-            "$salary_min - $salary_max"
+            "$$salary_min - $$salary_max"
         salary_min != null ->
-            "$salary_min"
+            "$$salary_min"
         salary_max != null ->
-            "$salary_max"
+            "$$salary_max"
         else ->
             "Salary not specified"
     }

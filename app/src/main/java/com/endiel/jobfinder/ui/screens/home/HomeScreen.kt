@@ -35,11 +35,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.data.repository.sampleJobs
+import com.endiel.jobfinder.model.Job
 import com.endiel.jobfinder.ui.components.BottomNavBar
 import com.endiel.jobfinder.ui.components.CategoryChip
 import com.endiel.jobfinder.ui.components.JobCard
 import com.endiel.jobfinder.ui.components.JobSearchBar
 import com.endiel.jobfinder.ui.screens.jobs.JobsViewModel
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 
 @Composable
 fun HomeScreen(

@@ -75,6 +75,7 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                 .padding(innerPadding),
             horizontalAlignment = Alignment.Start
         ) {
+            // TOP APP BAR
             TopAppBar(
                 title = { Text("Jobs") },
                 navigationIcon = {
@@ -104,7 +105,6 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp),
             ) {
                 // SEARCH BAR
                 JobSearchBar(
@@ -112,11 +112,11 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                     onQueryChange = { query ->
                         viewModel.onSearchQueryChange(query)
                     },
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier
                 )
                 Text(
                     text = "${filteredJobs.size} jobs found",
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier
                 )
                 // SEARCH RESULTS
                 if (uiState.isLoading) {
@@ -156,7 +156,7 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                     ) {
                         LazyColumn(
                             modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             items(filteredJobs) { job ->
                                 JobCard(
@@ -177,7 +177,7 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                                     enabled = !uiState.isLoadingMore,
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(16.dp)
+                                        .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
                                 ) {
                                     if (uiState.isLoadingMore) {
                                         CircularProgressIndicator(

@@ -16,8 +16,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -27,7 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.model.Job
 
@@ -39,59 +44,83 @@ fun JobCard(
     isSaved: Boolean,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
-        modifier = modifier.fillMaxWidth()
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
-            .clickable(onClick = onClick
-            ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp,
-            pressedElevation = 4.dp,
-            hoveredElevation = 4.dp
-        )
+            .clickable(
+                onClick = onClick
+            )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(8.dp)) {
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     contentDescription = "profile picture",
-                    modifier = Modifier.size(64.dp).clip(CircleShape),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Column() {
-                    Row() { Text(job.jobTitle) }
-                    Row() { Text(job.companyName) }
+
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(job.jobTitle, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        Text(job.companyName, fontSize = 12.sp, fontWeight = FontWeight.Light)
+                    }
+
+                    IconButton(onClick = onSaveClick) {
+                        Icon(
+                            imageVector = if (isSaved) {
+                                Icons.Default.Bookmark
+                            } else {
+                                Icons.Default.BookmarkBorder
+                            },
+                            contentDescription = if (isSaved) {
+                                "Unsave job"
+                            } else {
+                                "Save job"
+                            }
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.width(8.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Column() {
-                    Row() { Text("Salary") }
-                    Row() { Text("(${job.salary})/year")}
-                }
-                Column() {
-                    Row() { Text("Posted") }
-                    Row() { Text("Today") }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row() {
+                    Text(
+                        job.description,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
+            HorizontalDivider()
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = onSaveClick ) { Icon(imageVector = if (isSaved) {
-                    Icons.Default.Bookmark
-                } else {
-                    Icons.Default.BookmarkBorder
-                },
-                    contentDescription = if (isSaved) {
-                        "Unsave job"
-                    } else {
-                        "Save job"
-                        }
+                Row() {
+                    Text(
+                        " ${job.salary} ",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
                     )
+                }
+                Column() {
+                    Row() { Text("Deadline", fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+                    Row() { Text("June 4, 2026", fontSize = 12.sp, fontWeight = FontWeight.Light) }
                 }
             }
         }
