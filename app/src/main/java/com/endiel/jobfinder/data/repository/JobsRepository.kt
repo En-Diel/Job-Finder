@@ -7,6 +7,7 @@ import com.endiel.jobfinder.ui.navigation.Screen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import kotlin.collections.filter
 
 class JobsRepository @Inject constructor(private val remoteDataSource: JobsRemoteDataSource) {
 

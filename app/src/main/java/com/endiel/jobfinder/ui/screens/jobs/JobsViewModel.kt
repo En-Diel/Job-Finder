@@ -48,6 +48,14 @@ class JobsViewModel @Inject constructor(
     private val _searchLocation = MutableStateFlow("")
     val searchLocation: StateFlow<String> = _searchLocation.asStateFlow()
 
+    // Featured Jobs
+    private val featuredJobIds = setOf(
+        "12", "25", "38"
+    )
+
+    private val _featuredJobs = MutableStateFlow<List<Job>>(emptyList())
+    val featuredJobs: StateFlow<List<Job>> = _featuredJobs.asStateFlow()
+
     private var searchJob: kotlinx.coroutines.Job? = null
     private var currentPage = 1
 
@@ -124,6 +132,15 @@ class JobsViewModel @Inject constructor(
                         } else {
                             jobs
                         }
+
+                        if (
+                            !append && query.isNullOrBlank() && location.isNullOrBlank() && page == 1
+                        ) {
+//                            _featuredJobs.value = jobs.filter { job ->
+//                                job.id in featuredJobs
+//                            }
+                        }
+
                         // Updating the UI state
                         _uiState.value = JobsUiState(
                             jobs = updatedJobs,

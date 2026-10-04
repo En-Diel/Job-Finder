@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.data.repository.sampleJobs
@@ -49,6 +50,7 @@ fun HomeScreen(
     navController: NavController
 ) {
     val viewModel: JobsViewModel = hiltViewModel()
+    val featuredJobs by viewModel.featuredJobs.collectAsStateWithLifecycle()
 
     val savedJobs by viewModel.savedJobs.collectAsState()
     // We'll use this when we create a viewModel
