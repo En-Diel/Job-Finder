@@ -154,6 +154,7 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                             .fillMaxWidth()
                             .weight(1f)
                     ) {
+                        // JOBS LIST
                         LazyColumn(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -170,7 +171,7 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                                     }
                                 )
                             }
-
+                            // LOAD MORE
                             item {
                                 Button(
                                     onClick = { viewModel.loadNextPage() },

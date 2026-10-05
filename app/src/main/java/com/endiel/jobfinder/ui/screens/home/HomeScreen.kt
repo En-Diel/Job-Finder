@@ -155,7 +155,7 @@ fun HomeScreen(
             // JOBS CARD
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(filteredJobs) { job ->
                     JobCard(
