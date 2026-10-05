@@ -41,6 +41,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.endiel.jobfinder.R
 import com.endiel.jobfinder.model.UserProfile
+import com.endiel.jobfinder.ui.components.BottomNavBar
 import com.endiel.jobfinder.ui.navigation.Screen
 import com.endiel.jobfinder.ui.screens.auth.AuthViewModel
 
@@ -58,46 +59,47 @@ fun ProfileScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("Profile")
-                },
-                navigationIcon = {
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = { BottomNavBar(navController = navController) }
+    ) { innerPadding ->
+
+        TopAppBar(
+            title = {
+                Text("Profile")
+            },
+            navigationIcon = {
+                IconButton(
+                    onClick = onBackClick
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            },
+            actions = {
+                if (!uiState.isEditing) {
                     IconButton(
-                        onClick = onBackClick
+                        onClick = {
+                            viewModel.startEditing()
+                        }
                     ) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit Profile"
                         )
                     }
-                },
-                actions = {
-                    if (!uiState.isEditing) {
-                        IconButton(
-                            onClick = {
-                                viewModel.startEditing()
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = "Edit Profile"
-                            )
+                } else {
+                    TextButton(
+                        onClick = {
+                            viewModel.saveProfile()
                         }
-                    } else {
-                        TextButton(
-                            onClick = {
-                                viewModel.saveProfile()
-                            }
-                        ) {
-                            Text("Save")
-                        }
+                    ) {
+                        Text("Save")
                     }
                 }
-            )
-        }
-    ) { innerPadding ->
+            }
+        )
 
         Column(
             modifier = Modifier

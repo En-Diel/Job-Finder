@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.endiel.jobfinder.ui.components.BottomNavBar
 import com.endiel.jobfinder.ui.components.JobCard
 import com.endiel.jobfinder.ui.navigation.Screen
 
@@ -36,10 +37,18 @@ fun SavedJobsScreen(onBackClick: () -> Unit, navController: NavController) {
     val viewModel: SavedJobsViewModel = hiltViewModel()
     val savedJobs by viewModel.savedJobs.collectAsState()
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            BottomNavBar(navController = navController)
+        }) { innerPadding ->
+
         Column(
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
+
             TopAppBar(
                 title = { Text("Saved jobs") },
                 navigationIcon = {
@@ -54,7 +63,8 @@ fun SavedJobsScreen(onBackClick: () -> Unit, navController: NavController) {
             //val savedJobs = SavedJobsRepository.getSavedJobs()
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 items(savedJobs) { job ->
                     JobCard(
                         job = job,
