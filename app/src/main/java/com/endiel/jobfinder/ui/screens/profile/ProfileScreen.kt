@@ -177,10 +177,6 @@ fun ProfileScreen(
                 )
             }
             Button(
-                onClick = onSavedJobsClick,
-                modifier = Modifier.fillMaxWidth()
-            ) { Text("Saved Jobs") }
-            Button(
                 onClick = onApplicationsClick,
                 modifier = Modifier.fillMaxWidth()
             ) { Text("My Applications") }

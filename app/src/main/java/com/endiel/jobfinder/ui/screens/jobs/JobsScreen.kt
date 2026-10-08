@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -116,7 +117,9 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                 )
                 Text(
                     text = "${filteredJobs.size} jobs found",
-                    modifier = Modifier
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
                 )
                 // SEARCH RESULTS
                 if (uiState.isLoading) {
@@ -139,7 +142,12 @@ fun JobsScreen(onBackClick: () -> Unit, navController: NavController, viewModel:
                     }
                 } else if (filteredJobs.isEmpty()) {
                     Column() {
-                        Text(text = "No jobs found", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = "No jobs found",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "Try searching for a different job title or company.",

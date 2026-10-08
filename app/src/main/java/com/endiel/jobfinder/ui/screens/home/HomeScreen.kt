@@ -100,23 +100,37 @@ fun HomeScreen(
             horizontalAlignment = Alignment.Start
         ) {
             // WELCOME MESSAGE
-            Box(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
                 Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_launcher_background),
                         contentDescription = "profile picture",
-                        modifier = Modifier.size(64.dp).clip(CircleShape),
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(CircleShape),
                         contentScale = ContentScale.Crop
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Column() {
-                        Row() { Text("Good morning", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)) }
+                        Row() {
+                            Text(
+                                "Good morning",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                        }
                         Row() { Text("John Obwana", style = MaterialTheme.typography.labelLarge) }
                     }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text("Find your dream job", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 16.dp))
+            Text(
+                "Find your dream job",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(start = 16.dp)
+            )
             Spacer(modifier = Modifier.height(8.dp))
             // SEARCH BAR
             JobSearchBar(
@@ -154,7 +168,9 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(8.dp))
             // JOBS CARD
             LazyColumn(
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(filteredJobs) { job ->
@@ -167,7 +183,7 @@ fun HomeScreen(
                         onClick = {
                             //println("JOB CARD CLICKED: ${job.id}") // Testing the route
                             navController.navigate("job_details/${job.id}")
-                    })
+                        })
                 }
             }
         }
