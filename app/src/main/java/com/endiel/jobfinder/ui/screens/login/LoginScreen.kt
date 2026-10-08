@@ -1,6 +1,10 @@
 package com.endiel.jobfinder.ui.screens.login
 
 import android.text.Layout
+import android.widget.Space
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +15,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,6 +32,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -32,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.endiel.jobfinder.R
 import com.endiel.jobfinder.ui.navigation.Screen
 import com.endiel.jobfinder.ui.screens.auth.AuthViewModel
 
@@ -51,8 +62,8 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
     }
     Box(
         modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
         Column(
             modifier = Modifier
@@ -60,6 +71,13 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text("Welcome Back", style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                "Log in to your account to continue",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            )
             Text(
                 "Email",
                 fontWeight = FontWeight.Bold,
@@ -75,7 +93,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                 singleLine = true,
                 shape = RoundedCornerShape(16.dp)
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 "Password",
                 fontWeight = FontWeight.Bold,
@@ -92,10 +110,15 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                 shape = RoundedCornerShape(16.dp),
                 visualTransformation = PasswordVisualTransformation()
             )
-            TextButton(
-                onClick = { viewModel.resetPassword() },
-                enabled = !uiState.isLoading
-            ) { Text("Forgot password?") }
+            Spacer(modifier = Modifier.height(16.dp))
+            // FORGOT PASSWORD
+            Text(
+                text = "Forgot password?",
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable { viewModel.resetPassword() }
+            )
             Spacer(modifier = Modifier.height(16.dp))
             uiState.error?.let { errorMessage ->
                 Text(
@@ -125,7 +148,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                     Text("Sign In")
                 }
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             // DIVIDER
             Row(
                 modifier = Modifier
@@ -152,6 +175,59 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            // SIGN IN WITH
+            Row(
+                modifier = Modifier.wrapContentWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.google),
+                        contentDescription = "Google logo",
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.apple),
+                        contentDescription = "Apple logo",
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.facebook),
+                        contentDescription = "Facebook logo",
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
         }
         // SIGN UP
